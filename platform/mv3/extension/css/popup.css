@@ -1,0 +1,283 @@
+/*
+
+    T-Block Origin — popup panel
+
+    A compact, informative Material 3 surface: what is happening on this site,
+    a single obvious control to change it, and the local tools.
+
+*/
+
+@keyframes popup-busy {
+    to { opacity: 90%; }
+}
+
+:root {
+    --popup-width: 360px;
+    --popup-gap: 12px;
+    --popup-gap-thin: 8px;
+}
+
+:root body,
+:root.mobile body {
+    background-color: var(--md-surface-container-low);
+    min-width: var(--popup-width);
+}
+
+:root:not(.mobile) body {
+    width: var(--popup-width);
+}
+
+body.loading {
+    visibility: hidden;
+}
+
+body.busy main {
+    pointer-events: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--md-primary);
+    outline-offset: 2px;
+}
+
+a {
+    color: var(--md-primary);
+    fill: var(--md-primary);
+    text-decoration: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Top app bar                                                                */
+/* -------------------------------------------------------------------------- */
+
+.md-appbar {
+    align-items: center;
+    background-color: var(--md-surface-container-low);
+    display: flex;
+    gap: 4px;
+    justify-content: space-between;
+    min-height: 56px;
+    padding: 0 8px 0 16px;
+}
+
+.md-brand {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    min-width: 0;
+}
+
+.md-brand-logo {
+    flex-shrink: 0;
+    height: 26px;
+    width: 26px;
+}
+
+.md-brand-name {
+    color: var(--md-on-surface);
+    font: var(--md-type-title-m);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.md-appbar-actions {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    gap: 2px;
+}
+
+.md-appbar-actions .tool {
+    display: none;
+}
+
+.md-appbar-actions .tool.enabled {
+    display: inline-flex;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Site header                                                                */
+/* -------------------------------------------------------------------------- */
+
+main {
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--popup-gap) var(--popup-gap);
+}
+
+.md-hero {
+    padding: 4px 0 12px;
+    text-align: center;
+}
+
+#hostname {
+    color: var(--md-on-surface);
+    font: var(--md-type-title-l);
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+}
+
+.md-mode {
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-m);
+    margin-top: 2px;
+    text-transform: lowercase;
+}
+
+.md-mode > .md-mode-name {
+    color: var(--md-primary);
+    font-weight: 600;
+}
+
+.md-mode > .md-mode-preview {
+    display: none;
+}
+
+.md-mode > .md-mode-preview:not(:empty) {
+    display: inline;
+}
+
+.md-mode > .md-mode-preview:not(:empty)::before {
+    content: '\2002\2192\2002';
+}
+
+[dir="rtl"] .md-mode > .md-mode-preview:not(:empty)::before {
+    content: '\2002\2190\2002';
+}
+
+.md-mode-description {
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-s);
+    margin: 10px 2px 0;
+    min-height: 2.6em;
+    text-align: center;
+}
+
+body.nodata .needData {
+    visibility: hidden;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Local tools                                                                */
+/* -------------------------------------------------------------------------- */
+
+.toolMenu {
+    border-top: 1px solid var(--md-outline-variant);
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--popup-gap);
+    padding-top: var(--popup-gap-thin);
+}
+
+.toolMenu > h4 {
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-label-m);
+    letter-spacing: 0.5px;
+    margin: 0;
+    padding: 4px 8px;
+    text-transform: uppercase;
+}
+
+.md-tool {
+    align-items: center;
+    background-color: transparent;
+    border: 0;
+    border-radius: var(--md-shape-s);
+    color: var(--md-on-surface);
+    display: flex;
+    font: var(--md-type-body-m);
+    gap: 12px;
+    min-height: 44px;
+    padding: 0 12px;
+    text-align: start;
+    width: 100%;
+}
+
+.md-tool:hover {
+    background-color: color-mix(in srgb, var(--md-primary) var(--md-state-hover), transparent);
+}
+
+.md-tool .fa-icon {
+    color: var(--md-on-surface-variant);
+    font-size: 20px;
+    width: 20px;
+}
+
+.md-tool > .md-tool-label {
+    flex-grow: 1;
+}
+
+.toolMenu > .tool:not(.enabled) {
+    display: none;
+}
+
+:root:not(.isHTTP) .needHTTP {
+    display: none;
+}
+
+body[data-forbid~="filteringMode"] .filteringModeSlider,
+body[data-forbid~="filteringMode"] #filteringModeDescription {
+    pointer-events: none;
+    visibility: hidden;
+}
+
+body[data-forbid~="zapper"] #gotoZapper,
+body[data-forbid~="picker"] #gotoPicker,
+body[data-forbid~="picker"] #gotoUnpicker,
+body[data-forbid~="report"] #gotoReport,
+body[data-forbid~="dashboard"] #gotoDashboard {
+    display: none;
+}
+
+body[data-forbid~="zapper"][data-forbid~="picker"][data-forbid~="report"] .localTools {
+    display: none;
+}
+
+.filteringModeSlider[data-level="0"] ~ .localTools > *:is(#gotoPicker, #gotoUnpicker) {
+    display: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Busy / loading overlay                                                     */
+/* -------------------------------------------------------------------------- */
+
+aside {
+    align-items: center;
+    background-color: color-mix(in srgb, var(--md-surface-container-low) 85%, transparent);
+    bottom: 0;
+    display: none;
+    justify-content: center;
+    left: 0;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+
+aside .fa-icon {
+    animation: md-spin 1s steps(8) infinite;
+    color: var(--md-outline);
+    font-size: 40px;
+}
+
+body.busy aside {
+    animation: popup-busy 0s step-start 1s;
+    animation-fill-mode: forwards;
+    display: flex;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Narrow / portrait viewports                                                */
+/* -------------------------------------------------------------------------- */
+
+:root.portrait body {
+    overflow-y: auto;
+    width: 100%;
+}
+
+:root.mobile .md-tool {
+    min-height: 48px;
+}

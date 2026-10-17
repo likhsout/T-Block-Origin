@@ -1,0 +1,118 @@
+/*
+
+    T-Block Origin — filtering mode slider
+
+    A Material 3 style "stepped" slider. Four positions, one knob, and a
+    connecting rail so the discrete levels read at a glance.
+
+    Geometry contract with js/popup.js: the horizontal distance between two
+    neighbouring knob positions must equal (track-width - knob-size) / 3,
+    because the drag handler derives the level from the pointer offset over
+    that range.
+
+*/
+
+:root {
+    --fm-knob-size: 32px;
+    --fm-step: 44px;                             /* spacing between positions */
+    --fm-track-width: calc(3 * var(--fm-step) + var(--fm-knob-size));
+    --fm-track-height: 40px;
+}
+
+.filteringModeSlider {
+    align-items: center;
+    background-color: var(--md-surface-container-highest);
+    border-radius: var(--md-shape-full);
+    box-sizing: border-box;
+    display: flex;
+    height: var(--fm-track-height);
+    justify-content: space-between;
+    margin: 0 auto;
+    position: relative;
+    width: var(--fm-track-width);
+}
+
+/* Connecting rail */
+.filteringModeSlider::before {
+    background-color: var(--md-outline-variant);
+    content: '';
+    height: 2px;
+    left: calc(var(--fm-knob-size) / 2);
+    position: absolute;
+    right: calc(var(--fm-knob-size) / 2);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Step stops */
+.filteringModeSlider > span[data-level] {
+    background-color: var(--md-outline-variant);
+    border-radius: var(--md-shape-full);
+    cursor: pointer;
+    display: block;
+    flex: 0 0 auto;
+    height: 6px;
+    margin: 0 auto;
+    position: relative;
+    width: 6px;
+    z-index: 1;
+}
+
+.filteringModeSlider > span[data-level]:hover {
+    background-color: var(--md-outline);
+}
+
+.filteringModeSlider.moving > span[data-level] {
+    pointer-events: none;
+}
+
+/* Knob */
+.filteringModeButton {
+    background-color: transparent;
+    height: var(--fm-knob-size);
+    left: 0;
+    position: absolute;
+    top: calc((var(--fm-track-height) - var(--fm-knob-size)) / 2);
+    width: var(--fm-knob-size);
+    z-index: 2;
+}
+
+.filteringModeButton > div {
+    background-color: var(--md-primary);
+    border-radius: var(--md-shape-full);
+    box-shadow: var(--md-elev-1);
+    box-sizing: border-box;
+    height: 100%;
+    transition: background-color var(--md-dur-medium) var(--md-ease);
+    width: 100%;
+}
+
+.filteringModeSlider.moving .filteringModeButton > div,
+.filteringModeButton > div:hover {
+    filter: brightness(1.06);
+}
+
+.filteringModeSlider[data-level="0"] .filteringModeButton > div {
+    background-color: var(--md-outline);
+}
+
+.filteringModeSlider[data-level="0"] > span[data-level],
+.filteringModeSlider[data-level="0"]::before {
+    background-color: color-mix(in srgb, var(--md-outline) 45%, var(--md-surface-container-highest));
+}
+
+/* Discrete step positions; must match --fm-step */
+.filteringModeSlider[data-level="0"] .filteringModeButton { left: calc(0 * var(--fm-step)); }
+.filteringModeSlider[data-level="1"] .filteringModeButton { left: calc(1 * var(--fm-step)); }
+.filteringModeSlider[data-level="2"] .filteringModeButton { left: calc(2 * var(--fm-step)); }
+.filteringModeSlider[data-level="3"] .filteringModeButton { left: calc(3 * var(--fm-step)); }
+
+.filteringModeSlider:not(.moving) .filteringModeButton {
+    transition: left var(--md-dur-medium) var(--md-ease);
+}
+
+/* Right-to-left */
+[dir="rtl"] .filteringModeSlider[data-level="0"] .filteringModeButton { left: auto; right: calc(0 * var(--fm-step)); }
+[dir="rtl"] .filteringModeSlider[data-level="1"] .filteringModeButton { left: auto; right: calc(1 * var(--fm-step)); }
+[dir="rtl"] .filteringModeSlider[data-level="2"] .filteringModeButton { left: auto; right: calc(2 * var(--fm-step)); }
+[dir="rtl"] .filteringModeSlider[data-level="3"] .filteringModeButton { left: auto; right: calc(3 * var(--fm-step)); }

@@ -1,0 +1,625 @@
+/*
+
+    T-Block Origin — settings pane, filter lists, and custom filters
+
+*/
+
+@keyframes copied {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+body.loading {
+    visibility: hidden;
+}
+
+h3 {
+    color: var(--md-on-surface);
+    font: var(--md-type-title-m);
+    margin: 0 0 4px;
+}
+
+input, select {
+    min-height: 32px;
+}
+
+aside {
+    margin-block-start: 16px;
+}
+
+.md-section-intro {
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-s);
+    margin: 0 0 12px;
+    max-width: 74ch;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Protection summary                                                         */
+/* -------------------------------------------------------------------------- */
+
+.md-summary {
+    align-items: center;
+    column-gap: 16px;
+    display: flex;
+    margin-top: 16px;
+}
+
+.md-summary-icon {
+    align-items: center;
+    background-color: var(--md-primary-container);
+    border-radius: var(--md-shape-full);
+    color: var(--md-on-primary-container);
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 48px;
+    justify-content: center;
+    width: 48px;
+}
+
+.md-summary-icon .fa-icon {
+    font-size: 22px;
+}
+
+.md-summary-icon .md-summary-icon-off {
+    display: none;
+}
+
+body[data-protected="false"] .md-summary-icon {
+    background-color: var(--md-surface-container-highest);
+    color: var(--md-on-surface-variant);
+}
+
+body[data-protected="false"] .md-summary-icon .md-summary-icon-on {
+    display: none;
+}
+
+body[data-protected="false"] .md-summary-icon .md-summary-icon-off {
+    display: inline-flex;
+}
+
+.md-summary-title {
+    color: var(--md-on-surface);
+    font: var(--md-type-title-m);
+}
+
+.md-summary-sub {
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-s);
+    margin-top: 2px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Sections                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.md-card.md-switch-list {
+    padding: 4px 16px;
+}
+
+.md-switch-list .md-divider {
+    border-top: 1px solid var(--md-outline-variant);
+    height: 0;
+}
+
+.md-button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0;
+}
+
+.md-button-row input[type="file"] {
+    display: none;
+}
+
+.md-button-row .md-button .fa-icon {
+    font-size: 18px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Admin / disabled-feature gating                                            */
+/* -------------------------------------------------------------------------- */
+
+body[data-forbid~="dashboard"] #dashboard-nav [data-pane="settings"],
+body[data-forbid~="dashboard"] section[data-pane="settings"],
+body[data-forbid~="dashboard"] #dashboard-nav [data-pane="rulesets"],
+body[data-forbid~="dashboard"] section[data-pane="rulesets"],
+body[data-forbid~="dashboard"] #dashboard-nav [data-pane="filters"],
+body[data-forbid~="dashboard"] section[data-pane="filters"] {
+    display: none;
+}
+
+body[data-forbid~="filteringMode"] section[data-pane="settings"] > div:has(> h3[data-i18n="defaultFilteringModeSectionLabel"]) {
+    display: none;
+}
+
+body[data-forbid~="picker"] #dashboard-nav [data-pane="filters"],
+body[data-forbid~="picker"] section[data-pane="filters"] {
+    display: none;
+}
+
+body[data-forbid~="develop"] #developerMode {
+    display: none;
+}
+
+body[data-platform="safari"] [data-platform-exclude="safari"] {
+    display: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Default filtering mode cards                                               */
+/* -------------------------------------------------------------------------- */
+
+#defaultFilteringMode {
+    display: grid;
+    gap: 16px;
+    grid: auto-flow dense / repeat(3, minmax(0, 1fr));
+}
+
+.filteringModeCard {
+    background-color: var(--md-surface-container-lowest);
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--md-shape-l);
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: border-color var(--md-dur-short) var(--md-ease),
+                background-color var(--md-dur-short) var(--md-ease);
+}
+
+.filteringModeCard:hover {
+    border-color: var(--md-outline);
+}
+
+.filteringModeCard:has(.radio > [type="radio"]:checked) {
+    background-color: color-mix(in srgb, var(--md-primary-container) 45%, var(--md-surface-container-lowest));
+    border-color: var(--md-primary);
+    border-width: 2px;
+}
+
+.filteringModeCard .input.radio ~ [data-i18n] {
+    font: var(--md-type-title-s);
+    text-transform: capitalize;
+}
+
+.filteringModeCard span:has(> .input) {
+    align-items: center;
+    display: inline-flex;
+}
+
+.filteringModeCard > div {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    padding: 12px 16px;
+    width: 100%;
+}
+
+.filteringModeCard > div:nth-of-type(2) {
+    justify-content: center;
+    padding-bottom: 16px;
+    padding-top: 0;
+}
+
+.filteringModeCard > div:nth-of-type(3) {
+    background-color: color-mix(in srgb, var(--md-on-surface) 4%, transparent);
+    border-top: 1px solid var(--md-outline-variant);
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-s);
+    white-space: pre-line;
+}
+
+/* Compact, non-interactive level preview inside the cards. */
+.filteringModeCard .filteringModeSlider {
+    --fm-knob-size: 20px;
+    --fm-step: 26px;
+    --fm-track-height: 28px;
+    pointer-events: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Commit / status feedback                                                   */
+/* -------------------------------------------------------------------------- */
+
+body:not(.committing) #commit-spinner {
+    display: none;
+}
+
+body.committing #commit-spinner {
+    animation: md-spin 1s steps(8) infinite;
+    color: var(--md-primary);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Filter lists (rulesets pane)                                               */
+/* -------------------------------------------------------------------------- */
+
+section[data-pane="rulesets"] > div:first-of-type > p:first-of-type {
+    margin-top: 0;
+}
+
+section[data-pane="rulesets"] > div:first-of-type > p:last-of-type {
+    margin-bottom: 0;
+}
+
+.listEntry {
+    display: flex;
+    flex-direction: column;
+}
+
+.listEntry[data-nodeid] > .detailbar .listExpander {
+    cursor: pointer;
+    top: 2px;
+}
+
+.listEntry[data-role="rootnode"] > .detailbar,
+.listEntry[data-nodeid] > .detailbar .count {
+    cursor: pointer;
+}
+
+.listEntry[data-role="rootnode"] > .detailbar > *:not(.listExpander) {
+    pointer-events: none;
+}
+
+.listEntry[data-role="rootnode"]:not([data-nodeid="imported"]):has(> .listEntries:empty) {
+    display: none;
+}
+
+.listEntry .detailbar .count {
+    align-self: flex-end;
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-s);
+    pointer-events: none;
+}
+
+.listEntries {
+    display: flex;
+    flex-direction: column;
+}
+
+.listEntry:not([data-role="rootnode"]) > .listEntries {
+    margin-inline-start: var(--checkbox-size);
+}
+
+.listEntry.hideUnused > .listEntries > .listEntry:not(.isDefault):has(> .detailbar input:not(:checked)) {
+    display: none;
+}
+
+.listEntry.fromAdmin:has(> .detailbar input[disabled]:not(:checked)) {
+    display: none;
+}
+
+.listEntry > * {
+    unicode-bidi: embed;
+}
+
+.listEntry h3 {
+    display: inline-block;
+    margin: 0;
+}
+
+.listEntry > .detailbar {
+    align-items: center;
+    display: inline-flex;
+    margin: 6px 0;
+    white-space: nowrap;
+}
+
+.listEntry > .detailbar > *:not(:first-child) {
+    margin-inline-start: 4px;
+}
+
+.listEntry[data-nodeid="default"] > .detailbar > .listExpander {
+    display: none;
+}
+
+.listEntry > .detailbar > .listExpander svg {
+    transform: rotate(180deg);
+    transform-origin: 50%;
+}
+
+.listEntry.hideUnused > .detailbar > .listExpander svg {
+    transform: rotate(90deg);
+}
+
+.listEntry .checkbox:has(input[disabled]),
+.listEntry .checkbox:has(input[disabled]) ~ span {
+    filter: var(--checkbox-disabled-filter);
+}
+
+.listEntry a,
+.listEntry .fa-icon {
+    color: var(--md-on-surface-variant);
+    fill: var(--md-on-surface-variant);
+    font-size: 120%;
+}
+
+.listEntry .fa-icon:hover {
+    color: var(--md-primary);
+    transform: scale(1.2);
+}
+
+.listEntry[data-role="leaf"] .iconbar {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.listEntry[data-role="leaf"] .iconbar a.support[href="#"] {
+    display: none;
+}
+
+.listEntry[data-role="leaf"]:not([data-imported]) .doRemove,
+.listEntry[data-role="leaf"]:not([data-imported]) .undoRemove,
+.listEntry[data-role="leaf"][data-imported][data-remove] .doRemove,
+.listEntry[data-role="leaf"][data-imported]:not([data-remove]) .undoRemove {
+    display: none;
+}
+
+.listEntry[data-role="leaf"][data-imported][data-remove] {
+    text-decoration: line-through 2px red;
+}
+
+body.noMoreRuleset .listEntry:has(> .detailbar input:not(:checked)) {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+#lists.searchMode > .listEntries .listEntries,
+#lists.searchMode > .listEntries .listEntry.searchMatch {
+    display: flex !important;
+}
+
+#lists.searchMode > .listEntries .listEntry {
+    display: none;
+}
+
+#lists.searchMode > .listEntries .listExpander {
+    visibility: hidden;
+}
+
+body:not([data-supports~="compiled-filters"]) section[data-pane="rulesets"] aside,
+body:not([data-supports~="compiled-filters"]) section[data-pane="rulesets"] #lists [data-role="rootnode"][data-nodeid="imported"] {
+    display: none;
+}
+
+section[data-pane="rulesets"] #lists:has([data-nodeid="imported"].hideUnused) + aside {
+    display: none;
+}
+
+body .userScriptsInfo {
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-s);
+}
+
+body[data-supports~="user-scripts"] .userScriptsInfo {
+    display: none;
+}
+
+body section[data-pane="rulesets"] .importRulesetURL > p {
+    display: flex;
+    gap: 12px;
+}
+
+body section[data-pane="rulesets"] .importRulesetURL input {
+    flex-grow: 1;
+}
+
+body section[data-pane="rulesets"] .importRulesetURL input:is(:placeholder-shown, :invalid) ~ button {
+    display: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Custom filters pane                                                        */
+/* -------------------------------------------------------------------------- */
+
+body section[data-pane="filters"] {
+    padding-inline: 0;
+}
+
+body section[data-pane="filters"] .hostnames {
+    border-bottom: 1px solid var(--md-outline-variant);
+    margin-block-start: 16px;
+}
+
+body section[data-pane="filters"] .hostnames:empty {
+    display: none;
+}
+
+body.readonly section[data-pane="filters"] .hostnames {
+    pointer-events: none;
+}
+
+section[data-pane="filters"] ul {
+    list-style: none;
+    margin: 0;
+    padding-inline-start: 0;
+}
+
+section[data-pane="filters"] li[data-pretty] > div {
+    padding-inline-start: 8px;
+}
+
+section[data-pane="filters"] li.hostname > div {
+    background-color: var(--md-surface-container);
+}
+
+section[data-pane="filters"] ul ul {
+    padding-block-end: 16px;
+    padding-inline-start: 8px;
+}
+
+section[data-pane="filters"] li > div {
+    display: flex;
+    padding-block: 4px;
+}
+
+section[data-pane="filters"] li [contenteditable] {
+    flex-grow: 1;
+    word-break: break-all;
+}
+
+section[data-pane="filters"] li [contenteditable]:focus {
+    background-color: var(--md-surface-container-lowest);
+}
+
+section[data-pane="filters"] li > div span.fa-icon {
+    align-self: baseline;
+    color: var(--md-on-surface-variant);
+    font-size: calc(var(--font-size) + 2px);
+    padding-inline: 6px;
+    top: 2px;
+}
+
+section[data-pane="filters"] li > div span.remove,
+section[data-pane="filters"] li > div span.undo {
+    padding-inline-end: 8px;
+}
+
+section[data-pane="filters"] li.selector:not(:first-of-type) {
+    border-top: 1px dotted var(--md-outline-variant);
+}
+
+section[data-pane="filters"] li.removed > div [contenteditable] {
+    color: var(--md-error);
+    text-decoration-line: line-through;
+}
+
+section[data-pane="filters"] li.removed > div span.copy,
+section[data-pane="filters"] li.removed > div span.remove,
+section[data-pane="filters"] li:not(.removed) > div span.undo {
+    display: none;
+}
+
+section[data-pane="filters"] li > div span.copy.copied {
+    animation: copied 1s ease-out;
+}
+
+section[data-pane="filters"] span[contenteditable]:empty:not(:focus)::before {
+    color: var(--md-on-surface-variant);
+    content: '\2026';
+}
+
+section[data-pane="filters"] span[contenteditable]:empty ~ * {
+    display: none;
+}
+
+html.desktop section[data-pane="filters"] li > div:hover {
+    background-color: var(--md-surface-container-lowest);
+}
+
+html.desktop section[data-pane="filters"] li > div span.fa-icon:hover {
+    color: var(--md-primary);
+    transform: scale(1.2);
+}
+
+section[data-pane="filters"] aside details {
+    padding: 16px 0;
+}
+
+section[data-pane="filters"] aside summary {
+    cursor: pointer;
+    line-height: 2;
+}
+
+section[data-pane="filters"] aside .importFromText {
+    color: var(--md-on-surface-variant);
+}
+
+section[data-pane="filters"] aside textarea {
+    background-color: var(--md-surface-container-lowest);
+    border: 1px solid var(--md-outline);
+    box-sizing: border-box;
+    min-height: 6em;
+    resize: vertical;
+    width: 100%;
+}
+
+section[data-pane="filters"] aside .importFromText:has(textarea:placeholder-shown) button:has([data-i18n="addButton"]) {
+    display: none;
+}
+
+section[data-pane="filters"] aside .importFromText:not(:has(textarea:placeholder-shown)) button:has([data-i18n="importAndAppendButton"]),
+section[data-pane="filters"] aside .importFromText:not(:has(textarea:placeholder-shown)) button:has([data-i18n="exportButton"]) {
+    display: none;
+}
+
+section[data-pane="filters"] aside .importFromText p {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+section[data-pane="filters"] li.error[data-pretty] > div span[contenteditable] {
+    color: var(--md-error);
+}
+
+body:not([data-supports~="compiled-filters"]) section[data-pane="filters"] aside#sandboxEditor {
+    display: none;
+}
+
+section[data-pane="filters"] aside#sandboxEditor .cm-scroller {
+    min-height: 120px;
+    max-height: 480px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Busy overlay                                                               */
+/* -------------------------------------------------------------------------- */
+
+body.busy section[data-pane="busy"] > div {
+    align-items: stretch;
+    display: flex;
+    justify-content: center;
+}
+
+body.busy section[data-pane="busy"] .fa-icon {
+    animation: md-spin 1s steps(8) infinite;
+    color: var(--md-outline);
+    font-size: 4em;
+    margin: 2em;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Touch-screen devices                                                       */
+/* -------------------------------------------------------------------------- */
+
+:root.mobile .listEntry .fa-icon {
+    font-size: 120%;
+}
+
+:root.mobile .listEntries {
+    margin-inline-start: 0;
+    -webkit-margin-start: 0;
+}
+
+:root.mobile .li.listEntry {
+    overflow-x: auto;
+}
+
+:root.mobile .li.listEntry label > span:not([class]) {
+    flex-grow: 1;
+}
+
+:root.mobile .li.listEntry .listname,
+:root.mobile .li.listEntry .iconbar {
+    align-items: flex-start;
+    display: flex;
+    white-space: nowrap;
+}
+
+:root.mobile .li.listEntry .iconbar {
+    margin-top: 0.2em;
+}
+
+@media (max-width: 720px) {
+    #defaultFilteringMode {
+        grid: auto-flow dense / 1fr;
+    }
+
+    .filteringModeCard > div:nth-of-type(2) {
+        justify-content: flex-start;
+    }
+}

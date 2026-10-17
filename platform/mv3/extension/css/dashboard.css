@@ -1,0 +1,209 @@
+/*
+
+    T-Block Origin — dashboard chrome (top bar, navigation, panes)
+
+*/
+
+/* Neutralize the generic single-column layout from dashboard-common.css so the
+   dashboard can use a full-width top bar plus centered content. */
+body {
+    align-items: stretch;
+}
+
+body > header {
+    width: 100%;
+}
+
+header {
+    background-color: var(--md-surface-container-low);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.md-topbar {
+    align-items: center;
+    column-gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 64px;
+    padding: 0 16px;
+    row-gap: 4px;
+}
+
+.md-logo {
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.md-logo > img {
+    height: 30px;
+    width: 30px;
+}
+
+.md-product-name {
+    color: var(--md-on-surface);
+    font: var(--md-type-title-l);
+    white-space: nowrap;
+}
+
+nav {
+    align-items: center;
+    column-gap: 4px;
+    display: flex;
+    flex-grow: 1;
+    margin-inline-start: 16px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+nav > .tabButton {
+    align-items: center;
+    background-color: transparent;
+    border: 0;
+    border-radius: var(--md-shape-full);
+    color: var(--md-on-surface-variant);
+    display: inline-flex;
+    flex-shrink: 0;
+    fill: var(--md-on-surface-variant);
+    font: var(--md-type-title-s);
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 16px;
+    position: relative;
+    white-space: nowrap;
+}
+
+nav > .tabButton:hover {
+    background-color: var(--md-dashboard-tab-hover-surface, color-mix(in srgb, var(--md-on-surface) 8%, transparent));
+    color: var(--md-on-surface);
+}
+
+body[data-pane="settings"] #dashboard-nav .tabButton[data-pane="settings"],
+body[data-pane="rulesets"] #dashboard-nav .tabButton[data-pane="rulesets"],
+body[data-pane="filters"] #dashboard-nav .tabButton[data-pane="filters"],
+body[data-pane="develop"] #dashboard-nav .tabButton[data-pane="develop"],
+body[data-pane="about"] #dashboard-nav .tabButton[data-pane="about"] {
+    background-color: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+    fill: var(--md-on-secondary-container);
+}
+
+body:not([data-develop="true"]) #dashboard-nav .tabButton[data-pane="develop"] {
+    display: none;
+}
+
+body:not([data-pane="rulesets"]) header [data-pane-related="rulesets"] {
+    display: none;
+}
+
+.md-subheader {
+    align-items: center;
+    column-gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 16px 12px;
+    row-gap: 8px;
+}
+
+.md-subheader > .md-status {
+    align-items: center;
+    color: var(--md-on-surface-variant);
+    display: inline-flex;
+    font: var(--md-type-body-s);
+    gap: 8px;
+    margin: 0;
+}
+
+.md-subheader > #dnrError {
+    color: var(--md-error);
+    font: var(--md-type-body-s);
+    margin: 0;
+}
+
+.md-subheader > #dnrError:empty {
+    display: none;
+}
+
+.md-searchfield {
+    align-items: center;
+    background-color: var(--md-surface-container-high);
+    border-radius: var(--md-shape-full);
+    display: inline-flex;
+    flex-grow: 1;
+    max-width: 420px;
+    min-height: 40px;
+    padding: 0 12px;
+    position: relative;
+}
+
+.md-searchfield > .fa-icon {
+    color: var(--md-on-surface-variant);
+    flex-shrink: 0;
+    font-size: 18px;
+    margin-inline-end: 8px;
+}
+
+.md-searchfield > input {
+    background-color: transparent;
+    border: 0;
+    flex-grow: 1;
+    min-height: 38px;
+    outline: 0;
+    padding: 0;
+}
+
+.md-searchfield > input:focus {
+    border: 0;
+    outline: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Panes                                                                      */
+/* -------------------------------------------------------------------------- */
+
+body > section {
+    box-sizing: border-box;
+    display: none;
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: 8px 16px 48px;
+    width: 100%;
+}
+
+body [data-pane-related] {
+    padding: 0 16px;
+}
+
+body[data-pane="settings"]:not(.busy) > section[data-pane="settings"],
+body[data-pane="rulesets"]:not(.busy) > section[data-pane="rulesets"],
+body[data-pane="filters"]:not(.busy) > section[data-pane="filters"],
+body[data-pane="develop"]:not(.busy) > section[data-pane="develop"],
+body[data-pane="about"]:not(.busy) > section[data-pane="about"],
+body.busy[data-pane] > section[data-pane="busy"] {
+    display: block;
+}
+
+/* Settings pane is a stack of M3 sections. */
+section[data-pane="settings"] {
+    display: none;
+    flex-direction: column;
+    gap: 24px;
+}
+
+body[data-pane="settings"]:not(.busy) > section[data-pane="settings"] {
+    display: flex;
+}
+
+/* Touch-screen devices */
+:root.mobile .md-topbar {
+    flex-wrap: nowrap;
+}
+
+:root.mobile nav {
+    margin-inline-start: 8px;
+}
+
+:root.mobile .md-product-name {
+    display: none;
+}

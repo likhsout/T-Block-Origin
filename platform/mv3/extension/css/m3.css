@@ -1,0 +1,658 @@
+/*
+
+    T-Block Origin — Material Design 3 foundation
+
+    A single design-token + component layer shared by the popup and the
+    dashboard.  It has two jobs:
+
+      1. Map the Material 3 baseline color roles onto the design tokens the
+         rest of the code base already consumes (--surface-*, --ink-*, ...),
+         so every existing view inherits the new look automatically.
+      2. Provide the handful of M3 components used by the redesigned popup
+         and dashboard (cards, switches, buttons, lists, ...).
+
+    Color roles follow the M3 baseline (purple) scheme:
+      https://m3.material.io/styles/color/roles
+
+*/
+
+/* -------------------------------------------------------------------------- */
+/* M3 semantic color roles                                                    */
+/* -------------------------------------------------------------------------- */
+
+:root {
+    --md-primary: #6750A4;
+    --md-on-primary: #FFFFFF;
+    --md-primary-container: #EADDFF;
+    --md-on-primary-container: #21005D;
+    --md-secondary-container: #E8DEF8;
+    --md-on-secondary-container: #1D192B;
+    --md-tertiary: #7D5260;
+    --md-tertiary-container: #FFD8E4;
+    --md-on-tertiary-container: #31111D;
+    --md-error: #B3261E;
+    --md-on-error: #FFFFFF;
+    --md-error-container: #F9DEDC;
+    --md-on-error-container: #410E0B;
+    --md-success: #1B6B3A;
+    --md-success-container: #D7F3DF;
+    --md-on-success-container: #06301A;
+    --md-warning: #8A5A00;
+    --md-warning-container: #FFEBC7;
+    --md-on-warning-container: #2B1700;
+    --md-outline: #79747E;
+    --md-outline-variant: #CAC4D0;
+    --md-shadow: 0 0 0;
+
+    --md-surface: #FEF7FF;
+    --md-surface-dim: #DED8E1;
+    --md-on-surface: #1D1B20;
+    --md-on-surface-variant: #49454F;
+    --md-surface-container-lowest: #FFFFFF;
+    --md-surface-container-low: #F7F2FA;
+    --md-surface-container: #F3EDF7;
+    --md-surface-container-high: #ECE6F0;
+    --md-surface-container-highest: #E6E0E9;
+    --md-inverse-surface: #322F35;
+    --md-inverse-on-surface: #F5EFF7;
+    --md-scrim: 0 0 0;
+}
+
+:root.light {
+    --md-primary: #6750A4;
+    --md-on-primary: #FFFFFF;
+    --md-primary-container: #EADDFF;
+    --md-on-primary-container: #21005D;
+    --md-secondary-container: #E8DEF8;
+    --md-on-secondary-container: #1D192B;
+    --md-tertiary: #7D5260;
+    --md-tertiary-container: #FFD8E4;
+    --md-on-tertiary-container: #31111D;
+    --md-error: #B3261E;
+    --md-on-error: #FFFFFF;
+    --md-error-container: #F9DEDC;
+    --md-on-error-container: #410E0B;
+    --md-success: #1B6B3A;
+    --md-success-container: #D7F3DF;
+    --md-on-success-container: #06301A;
+    --md-warning: #8A5A00;
+    --md-warning-container: #FFEBC7;
+    --md-on-warning-container: #2B1700;
+    --md-outline: #79747E;
+    --md-outline-variant: #CAC4D0;
+
+    --md-surface: #FEF7FF;
+    --md-surface-dim: #DED8E1;
+    --md-on-surface: #1D1B20;
+    --md-on-surface-variant: #49454F;
+    --md-surface-container-lowest: #FFFFFF;
+    --md-surface-container-low: #F7F2FA;
+    --md-surface-container: #F3EDF7;
+    --md-surface-container-high: #ECE6F0;
+    --md-surface-container-highest: #E6E0E9;
+    --md-inverse-surface: #322F35;
+    --md-inverse-on-surface: #F5EFF7;
+    --md-scrim: 0 0 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --md-primary: #D0BCFF;
+        --md-on-primary: #381E72;
+        --md-primary-container: #4F378B;
+        --md-on-primary-container: #EADDFF;
+        --md-secondary-container: #4A4458;
+        --md-on-secondary-container: #E8DEF8;
+        --md-tertiary: #EFB8C8;
+        --md-tertiary-container: #633B48;
+        --md-on-tertiary-container: #FFD8E4;
+        --md-error: #F2B8B5;
+        --md-on-error: #601410;
+        --md-error-container: #8C1D18;
+        --md-on-error-container: #F9DEDC;
+        --md-success: #7FD79B;
+        --md-success-container: #0C3A20;
+        --md-on-success-container: #D7F3DF;
+        --md-warning: #EFC06A;
+        --md-warning-container: #4A3200;
+        --md-on-warning-container: #FFEBC7;
+        --md-outline: #938F99;
+        --md-outline-variant: #49454F;
+
+        --md-surface: #141218;
+        --md-surface-dim: #141218;
+        --md-on-surface: #E6E0E9;
+        --md-on-surface-variant: #CAC4D0;
+        --md-surface-container-lowest: #0F0D13;
+        --md-surface-container-low: #1D1B20;
+        --md-surface-container: #211F26;
+        --md-surface-container-high: #2B2930;
+        --md-surface-container-highest: #36343B;
+        --md-inverse-surface: #E6E0E9;
+        --md-inverse-on-surface: #322F35;
+        --md-scrim: 0 0 0;
+    }
+}
+
+:root.dark {
+    --md-primary: #D0BCFF;
+    --md-on-primary: #381E72;
+    --md-primary-container: #4F378B;
+    --md-on-primary-container: #EADDFF;
+    --md-secondary-container: #4A4458;
+    --md-on-secondary-container: #E8DEF8;
+    --md-tertiary: #EFB8C8;
+    --md-tertiary-container: #633B48;
+    --md-on-tertiary-container: #FFD8E4;
+    --md-error: #F2B8B5;
+    --md-on-error: #601410;
+    --md-error-container: #8C1D18;
+    --md-on-error-container: #F9DEDC;
+    --md-success: #7FD79B;
+    --md-success-container: #0C3A20;
+    --md-on-success-container: #D7F3DF;
+    --md-warning: #EFC06A;
+    --md-warning-container: #4A3200;
+    --md-on-warning-container: #FFEBC7;
+    --md-outline: #938F99;
+    --md-outline-variant: #49454F;
+
+    --md-surface: #141218;
+    --md-surface-dim: #141218;
+    --md-on-surface: #E6E0E9;
+    --md-on-surface-variant: #CAC4D0;
+    --md-surface-container-lowest: #0F0D13;
+    --md-surface-container-low: #1D1B20;
+    --md-surface-container: #211F26;
+    --md-surface-container-high: #2B2930;
+    --md-surface-container-highest: #36343B;
+    --md-inverse-surface: #E6E0E9;
+    --md-inverse-on-surface: #322F35;
+    --md-scrim: 0 0 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* M3 shape, elevation, motion                                                */
+/* -------------------------------------------------------------------------- */
+
+:root {
+    --md-shape-xs: 4px;
+    --md-shape-s: 8px;
+    --md-shape-m: 12px;
+    --md-shape-l: 16px;
+    --md-shape-xl: 28px;
+    --md-shape-full: 9999px;
+
+    --md-elev-1: 0 1px 2px rgb(var(--md-scrim) / 30%), 0 1px 3px 1px rgb(var(--md-scrim) / 15%);
+    --md-elev-2: 0 1px 2px rgb(var(--md-scrim) / 30%), 0 2px 6px 2px rgb(var(--md-scrim) / 15%);
+    --md-elev-3: 0 4px 8px 3px rgb(var(--md-scrim) / 15%), 0 1px 3px rgb(var(--md-scrim) / 30%);
+
+    --md-ease: cubic-bezier(0.2, 0, 0, 1);
+    --md-dur-short: 120ms;
+    --md-dur-medium: 220ms;
+
+    --md-state-hover: 8%;
+    --md-state-focus: 12%;
+    --md-state-press: 12%;
+
+    /* M3 type scale (subset) */
+    --md-type-title-l: 600 22px/28px var(--font-family);
+    --md-type-title-m: 600 16px/24px var(--font-family);
+    --md-type-title-s: 600 14px/20px var(--font-family);
+    --md-type-body-l: 400 16px/24px var(--font-family);
+    --md-type-body-m: 400 14px/20px var(--font-family);
+    --md-type-body-s: 400 12px/16px var(--font-family);
+    --md-type-label-l: 600 14px/20px var(--font-family);
+    --md-type-label-m: 600 12px/16px var(--font-family);
+    --md-type-label-s: 600 11px/16px var(--font-family);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Map M3 roles onto the existing T-Block/uBO design tokens                   */
+/* -------------------------------------------------------------------------- */
+
+:root,
+:root.light,
+:root.dark {
+    --font-family: Inter, Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    --surface-0: var(--md-surface-container-lowest);
+    --surface-0-rgb: 255 255 255;
+    --surface-1: var(--md-surface-container-low);
+    --surface-2: var(--md-surface-container-high);
+    --surface-3: var(--md-outline-variant);
+
+    --ink-0: var(--md-on-surface);
+    --ink-1: var(--md-on-surface);
+    --ink-2: color-mix(in srgb, var(--md-on-surface) 87%, transparent);
+    --ink-3: color-mix(in srgb, var(--md-on-surface) 62%, transparent);
+    --ink-4: color-mix(in srgb, var(--md-on-surface) 40%, transparent);
+
+    --border-1: var(--md-outline-variant);
+    --border-2: var(--md-outline-variant);
+    --border-3: var(--md-outline);
+    --border-4: var(--md-outline);
+    --hr-ink: var(--md-outline-variant);
+
+    --accent-surface-1: var(--md-primary);
+    --accent-ink-1: var(--md-on-primary);
+    --accent-ink-3: var(--md-on-surface);
+    --subtil-ink: var(--md-primary);
+
+    --link-ink: var(--md-primary);
+    --link-hover-ink: color-mix(in srgb, var(--md-primary) 80%, var(--md-on-surface));
+
+    --error-surface: var(--md-error);
+
+    --button-ink: var(--md-primary);
+    --button-surface: transparent;
+    --button-border-size: 1px;
+    --button-border-radius: var(--md-shape-full);
+    --button-preferred-ink: var(--md-on-primary);
+    --button-preferred-surface: var(--md-primary);
+    --button-disabled-surface: color-mix(in srgb, var(--md-on-surface) 12%, transparent);
+
+    --checkbox-ink: var(--md-on-surface-variant);
+    --checkbox-checked-ink: var(--md-primary);
+
+    --dashboard-tab-ink: var(--md-on-surface-variant);
+    --dashboard-tab-active-ink: var(--md-primary);
+    --dashboard-tab-active-surface: var(--md-primary-container);
+    --dashboard-tab-focus-surface: var(--md-primary-container);
+    --dashboard-tab-hover-surface: color-mix(in srgb, var(--md-primary) var(--md-state-hover), transparent);
+    --dashboard-tab-hover-border: transparent;
+    --dashboard-highlight-surface-rgb: var(--md-primary-container);
+
+    --notice-ink: var(--md-on-primary-container);
+    --notice-surface: var(--md-primary-container);
+    --notice-surface-shadow: none;
+
+    --fieldset-header-ink: var(--md-primary);
+
+    --popup-toolbar-surface: var(--md-surface-container);
+    --popup-toolbar-surface-hover: color-mix(in srgb, var(--md-primary) var(--md-state-hover), transparent);
+    --popup-power-ink: var(--md-primary);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Base element polish                                                        */
+/* -------------------------------------------------------------------------- */
+
+body {
+    color: var(--md-on-surface);
+    background-color: var(--md-surface-container-low);
+    font: var(--md-type-body-m);
+}
+
+h3 {
+    font: var(--md-type-title-m);
+    letter-spacing: 0.1px;
+}
+
+code,
+.code {
+    background-color: var(--md-surface-container-high);
+    border-radius: var(--md-shape-xs);
+}
+
+hr {
+    border-top: 1px solid var(--md-outline-variant);
+}
+
+a:not(.fa-icon) {
+    color: var(--md-primary);
+}
+
+input[type="text"],
+input[type="url"],
+input[type="search"],
+input[type="number"],
+textarea,
+select {
+    background-color: var(--md-surface-container-lowest);
+    border: 1px solid var(--md-outline);
+    border-radius: var(--md-shape-xs);
+    box-sizing: border-box;
+    color: var(--md-on-surface);
+    font: var(--md-type-body-m);
+    min-height: 32px;
+    padding: 4px 10px;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--md-primary);
+    outline: 1px solid var(--md-primary);
+}
+
+/* -------------------------------------------------------------------------- */
+/* M3 buttons                                                                 */
+/* -------------------------------------------------------------------------- */
+
+.md-button {
+    align-items: center;
+    background-color: var(--md-primary);
+    border: 0;
+    border-radius: var(--md-shape-full);
+    color: var(--md-on-primary);
+    display: inline-flex;
+    font: var(--md-type-label-l);
+    gap: 8px;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 24px;
+    position: relative;
+    transition: box-shadow var(--md-dur-short) var(--md-ease),
+                background-color var(--md-dur-short) var(--md-ease);
+}
+
+.md-button:hover {
+    box-shadow: var(--md-elev-1);
+}
+
+.md-button.md-filled-tonal {
+    background-color: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+}
+
+.md-button.md-outlined {
+    background-color: transparent;
+    border: 1px solid var(--md-outline);
+    color: var(--md-primary);
+}
+
+.md-button.md-text {
+    background-color: transparent;
+    color: var(--md-primary);
+    padding: 0 12px;
+}
+
+.md-button.md-danger {
+    background-color: var(--md-error-container);
+    color: var(--md-on-error-container);
+}
+
+.md-button[disabled],
+.md-button.disabled {
+    background-color: color-mix(in srgb, var(--md-on-surface) 12%, transparent);
+    color: color-mix(in srgb, var(--md-on-surface) 38%, transparent);
+    pointer-events: none;
+    box-shadow: none;
+}
+
+.md-icon-button {
+    align-items: center;
+    background-color: transparent;
+    border: 0;
+    border-radius: var(--md-shape-full);
+    color: var(--md-on-surface-variant);
+    display: inline-flex;
+    height: 40px;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    width: 40px;
+}
+
+.md-icon-button:hover {
+    background-color: color-mix(in srgb, var(--md-on-surface-variant) var(--md-state-hover), transparent);
+    color: var(--md-on-surface);
+}
+
+.md-icon-button .fa-icon {
+    font-size: 20px;
+}
+
+.md-icon-button.selected {
+    color: var(--md-primary);
+}
+
+/* -------------------------------------------------------------------------- */
+/* M3 surface cards                                                           */
+/* -------------------------------------------------------------------------- */
+
+.md-card {
+    background-color: var(--md-surface-container-lowest);
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--md-shape-l);
+    box-sizing: border-box;
+    padding: 16px;
+}
+
+.md-card > .md-card-title {
+    color: var(--md-on-surface);
+    font: var(--md-type-title-m);
+    margin: 0 0 4px;
+}
+
+.md-card > .md-card-subtitle {
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-s);
+    margin: 0 0 8px;
+}
+
+.md-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.md-list-divider {
+    border-top: 1px solid var(--md-outline-variant);
+    height: 0;
+    margin: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* M3 switch                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.md-switch {
+    --md-switch-width: 52px;
+    --md-switch-height: 32px;
+    align-items: center;
+    display: inline-flex;
+    flex-shrink: 0;
+    height: var(--md-switch-height);
+    margin: 0;
+    position: relative;
+    width: var(--md-switch-width);
+}
+
+.md-switch > input[type="checkbox"] {
+    cursor: pointer;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+}
+
+.md-switch::before {
+    background-color: var(--md-surface-container-highest);
+    border: 2px solid var(--md-outline);
+    border-radius: var(--md-shape-full);
+    box-sizing: border-box;
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: background-color var(--md-dur-medium) var(--md-ease),
+                border-color var(--md-dur-medium) var(--md-ease);
+    width: 100%;
+}
+
+.md-switch::after {
+    background-color: var(--md-outline);
+    border-radius: var(--md-shape-full);
+    content: '';
+    height: 16px;
+    left: 8px;
+    position: absolute;
+    top: 8px;
+    transition: transform var(--md-dur-medium) var(--md-ease),
+                background-color var(--md-dur-medium) var(--md-ease),
+                width var(--md-dur-medium) var(--md-ease),
+                height var(--md-dur-medium) var(--md-ease);
+    width: 16px;
+}
+
+.md-switch:has(> input:checked)::before {
+    background-color: var(--md-primary);
+    border-color: var(--md-primary);
+}
+
+.md-switch:has(> input:checked)::after {
+    background-color: var(--md-on-primary);
+    height: 24px;
+    transform: translateX(20px);
+    width: 24px;
+}
+
+.md-switch:has(> input:focus-visible)::before {
+    outline: 2px solid var(--md-primary);
+    outline-offset: 2px;
+}
+
+.md-switch:has(> input[disabled]) {
+    filter: opacity(38%);
+    pointer-events: none;
+}
+
+/* A switch plus its caption, laid out as one tappable row. */
+.md-switch-row {
+    align-items: center;
+    color: var(--md-on-surface);
+    column-gap: 12px;
+    display: flex;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 4px 0;
+}
+
+.md-switch-row > .md-switch-row-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.md-switch-row > .md-switch-row-label > .md-switch-row-title {
+    font: var(--md-type-body-l);
+}
+
+.md-switch-row > .md-switch-row-label > .md-switch-row-support {
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-s);
+}
+
+/* -------------------------------------------------------------------------- */
+/* M3 segmented control                                                       */
+/* -------------------------------------------------------------------------- */
+
+.md-segmented {
+    align-items: center;
+    background-color: var(--md-surface-container-highest);
+    border-radius: var(--md-shape-full);
+    display: inline-flex;
+    height: 40px;
+    padding: 2px;
+    position: relative;
+}
+
+.md-segmented > button {
+    background-color: transparent;
+    border: 0;
+    border-radius: var(--md-shape-full);
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-label-l);
+    height: 36px;
+    padding: 0 16px;
+}
+
+.md-segmented > button.selected {
+    background-color: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Small helpers                                                              */
+/* -------------------------------------------------------------------------- */
+
+.md-chip {
+    align-items: center;
+    background-color: var(--md-surface-container-high);
+    border-radius: var(--md-shape-s);
+    color: var(--md-on-surface-variant);
+    display: inline-flex;
+    font: var(--md-type-label-m);
+    gap: 6px;
+    padding: 4px 10px;
+}
+
+.md-banner {
+    align-items: flex-start;
+    border-radius: var(--md-shape-m);
+    display: flex;
+    font: var(--md-type-body-s);
+    gap: 10px;
+    padding: 12px 14px;
+}
+
+.md-banner.md-info {
+    background-color: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+}
+
+.md-banner.md-warn {
+    background-color: var(--md-warning-container);
+    color: var(--md-on-warning-container);
+}
+
+.md-banner.md-error {
+    background-color: var(--md-error-container);
+    color: var(--md-on-error-container);
+}
+
+.md-banner:empty {
+    display: none;
+}
+
+/* Overlay that fades to the page while a view is loading. */
+.md-scrim {
+    align-items: center;
+    background-color: color-mix(in srgb, var(--md-surface-container-low) 85%, transparent);
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+
+.md-scrim > .fa-icon {
+    animation: md-spin 1s steps(8) infinite;
+    color: var(--md-outline);
+    font-size: 40px;
+}
+
+@keyframes md-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+    }
+}

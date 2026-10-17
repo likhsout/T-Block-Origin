@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html id="tblock-popup-panel" class="desktop">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark" />
+<link rel="stylesheet" href="css/default.css">
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/fa-icons.css">
+<link rel="stylesheet" href="css/m3.css">
+<link rel="stylesheet" href="css/filtering-mode.css">
+<link rel="stylesheet" href="css/popup.css">
+<title data-i18n="extName"></title>
+</head>
+
+<body class="loading busy">
+
+<header class="md-appbar">
+    <div class="md-brand">
+        <img class="md-brand-logo" src="img/tblock.svg" alt="">
+        <span class="md-brand-name" data-i18n="extName"></span>
+    </div>
+    <div class="md-appbar-actions">
+        <button id="gotoMatchedRules" class="md-icon-button tool" type="button"
+            data-i18n-title="popupTipMatchedRules">
+            <span class="fa-icon">list-alt</span>
+        </button>
+        <button id="gotoDashboard" class="md-icon-button tool enabled" type="button"
+            data-i18n-title="popupTipDashboard">
+            <span class="fa-icon">cogs</span>
+        </button>
+    </div>
+</header>
+
+<main>
+    <section class="md-hero needData">
+        <div id="hostname"><span></span></div>
+        <div id="filteringModeText" class="md-mode">
+            <span class="md-mode-name"></span><span class="md-mode-preview"></span>
+        </div>
+    </section>
+
+    <div class="filteringModeSlider needData" role="radiogroup" aria-label="popupFilteringModeLabel">
+        <div class="filteringModeButton"><div></div></div>
+        <span data-level="0" aria-label="filteringMode0Name"></span>
+        <span data-level="1" aria-label="filteringMode1Name"></span>
+        <span data-level="2" aria-label="filteringMode2Name"></span>
+        <span data-level="3" aria-label="filteringMode3Name"></span>
+    </div>
+
+    <p id="filteringModeDescription" class="md-mode-description needData"></p>
+
+    <div class="toolMenu localTools needHTTP">
+        <h4 data-i18n="popupLocalToolsLabel"></h4>
+        <button id="gotoZapper" class="tool md-tool enabled" type="button">
+            <span class="fa-icon">bolt</span>
+            <span class="md-tool-label" data-i18n="zapperTipEnter">_</span>
+        </button>
+        <button id="gotoPicker" class="tool md-tool enabled" type="button">
+            <span class="fa-icon">eye-slash</span>
+            <span class="md-tool-label" data-i18n="pickerTipEnter">_</span>
+        </button>
+        <button id="gotoUnpicker" class="tool md-tool" type="button">
+            <span class="fa-icon">eye-open</span>
+            <span class="md-tool-label" data-i18n="unpickerTipEnter">_</span>
+        </button>
+        <button id="gotoReport" class="tool md-tool enabled" type="button">
+            <span class="fa-icon">comment-alt</span>
+            <span class="md-tool-label" data-i18n="popupTipReport">_</span>
+        </button>
+    </div>
+</main>
+
+<aside>
+    <span class="fa-icon">spinner</span>
+</aside>
+
+<script src="js/theme.js" type="module"></script>
+<script src="js/fa-icons.js" type="module"></script>
+<script src="js/i18n.js" type="module"></script>
+<script src="js/popup.js" type="module"></script>
+
+</body>
+
+</html>
