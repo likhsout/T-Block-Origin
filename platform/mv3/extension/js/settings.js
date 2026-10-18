@@ -21,7 +21,7 @@
 */
 
 import { browser, i18n, sendMessage } from './ext.js';
-import { dom, qs$ } from './dom.js';
+import { dom, qs$, qsa$ } from './dom.js';
 import { hashFromIterable } from './dashboard.js';
 import { renderFilterLists } from './filter-lists.js';
 
@@ -76,6 +76,19 @@ function renderWidgets() {
             data.disabledFeatures?.includes('develop') !== true;
         dom.body.dataset.develop = `${state}`;
         dom.prop('#developerMode input[type="checkbox"]', 'checked', state);
+    }
+
+    if ( typeof chrome !== 'undefined' && chrome.storage?.local ) {
+        chrome.storage.local.get(['customAccent', 'oledMode'], res => {
+            const currentAccent = res.customAccent || 'purple';
+            for ( const btn of qsa$('#accentPicker button') ) {
+                btn.classList.toggle('active', btn.dataset.accent === currentAccent);
+            }
+            const oledInput = qs$('#oledMode input[type="checkbox"]');
+            if ( oledInput ) {
+                oledInput.checked = Boolean(res.oledMode);
+            }
+        });
     }
 }
 
@@ -265,6 +278,31 @@ dom.on('section[data-pane="settings"] button:has([data-i18n="restoreButton"])', 
 
 dom.on('section[data-pane="settings"] button:has([data-i18n="resetToDefaultButton"])', 'click', ( ) => {
     resetSettings();
+});
+
+dom.on('#accentPicker', 'click', 'button[data-accent]', ev => {
+    const btn = ev.target.closest('button[data-accent]');
+    if ( !btn ) { return; }
+    const accent = btn.dataset.accent;
+    for ( const b of qsa$('#accentPicker button') ) {
+        b.classList.toggle('active', b === btn);
+    }
+    if ( accent === 'purple' ) {
+        delete dom.html.dataset.accent;
+    } else {
+        dom.html.dataset.accent = accent;
+    }
+    if ( typeof chrome !== 'undefined' && chrome.storage?.local ) {
+        chrome.storage.local.set({ customAccent: accent });
+    }
+});
+
+dom.on('#oledMode input[type="checkbox"]', 'change', ev => {
+    const isOled = ev.target.checked;
+    dom.cl.toggle(dom.html, 'oled', isOled);
+    if ( typeof chrome !== 'undefined' && chrome.storage?.local ) {
+        chrome.storage.local.set({ oledMode: isOled });
+    }
 });
 
 /******************************************************************************/

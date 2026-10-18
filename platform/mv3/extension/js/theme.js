@@ -38,3 +38,18 @@ import { dom } from './dom.js';
     dom.cl.toggle(dom.html, 'mobile', isTouchScreen);
     dom.cl.toggle(dom.html, 'desktop', isTouchScreen === false);
 }
+
+if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+    chrome.storage.local.get(['customAccent', 'oledMode'], res => {
+        if (res.customAccent && res.customAccent !== 'purple') {
+            dom.html.dataset.accent = res.customAccent;
+        } else {
+            delete dom.html.dataset.accent;
+        }
+        if (res.oledMode) {
+            dom.cl.add(dom.html, 'oled');
+        } else {
+            dom.cl.remove(dom.html, 'oled');
+        }
+    });
+}

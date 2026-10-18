@@ -94,12 +94,74 @@ body[data-protected="false"] .md-summary-icon .md-summary-icon-off {
 /* -------------------------------------------------------------------------- */
 
 .md-card.md-switch-list {
-    padding: 4px 16px;
+    padding: 6px;
 }
 
 .md-switch-list .md-divider {
     border-top: 1px solid var(--md-outline-variant);
     height: 0;
+    margin: 2px 8px;
+    opacity: 0.5;
+}
+
+.md-appearance-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 12px;
+}
+
+.md-theme-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.md-theme-label {
+    color: var(--md-on-surface);
+    font: var(--md-type-body-m);
+    font-weight: 500;
+}
+
+.md-theme-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.md-theme-chip {
+    align-items: center;
+    background-color: var(--md-surface-container-high);
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--md-shape-full);
+    color: var(--md-on-surface);
+    cursor: pointer;
+    display: inline-flex;
+    font: var(--md-type-label-l);
+    gap: 8px;
+    padding: 6px 12px;
+    transition: background-color var(--md-dur-short) var(--md-ease),
+                border-color var(--md-dur-short) var(--md-ease);
+}
+
+.md-theme-chip:hover {
+    background-color: var(--md-surface-container-highest);
+    border-color: var(--md-outline);
+}
+
+.md-theme-chip.active {
+    background-color: var(--md-primary-container);
+    border-color: var(--md-primary);
+    color: var(--md-on-primary-container);
+    font-weight: 600;
+}
+
+.md-chip-color {
+    border-radius: var(--md-shape-full);
+    display: inline-block;
+    height: 12px;
+    width: 12px;
 }
 
 .md-button-row {
@@ -217,7 +279,13 @@ body[data-platform="safari"] [data-platform-exclude="safari"] {
     --fm-knob-size: 20px;
     --fm-step: 26px;
     --fm-track-height: 28px;
+    --fm-track-width: calc(3 * var(--fm-step) + var(--fm-knob-size));
     pointer-events: none;
+}
+
+.filteringModeCard .filteringModeSlider > span[data-level] {
+    height: 4px;
+    width: 4px;
 }
 
 /* -------------------------------------------------------------------------- */

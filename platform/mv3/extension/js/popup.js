@@ -53,6 +53,22 @@ function renderModeDescription(level) {
 async function setFilteringMode(level, commit = false) {
     const modeSlider = qs$('.filteringModeSlider');
     modeSlider.dataset.level = level;
+    const heroShield = qs$('#heroShield');
+    if ( heroShield ) {
+        heroShield.dataset.level = level;
+    }
+    const heroStats = qs$('#heroStats');
+    if ( heroStats ) {
+        if ( level === 0 ) {
+            heroStats.textContent = 'Protection Paused';
+        } else if ( level === 1 ) {
+            heroStats.textContent = 'Basic Protection Active';
+        } else if ( level === 2 ) {
+            heroStats.textContent = 'Optimal Protection Active';
+        } else if ( level === 3 ) {
+            heroStats.textContent = 'Complete Protection Active';
+        }
+    }
     if ( qs$('.filteringModeSlider.moving') === null ) {
         dom.text(
             '#filteringModeText > span:nth-of-type(1)',
@@ -354,6 +370,23 @@ async function init() {
     dom.cl.toggle(dom.root, 'isHTTP', isHTTP);
 
     dom.cl.toggle('#gotoUnpicker', 'enabled', popupPanelData.hasCustomFilters);
+
+    if ( typeof browser !== 'undefined' && browser.action?.getBadgeText ) {
+        try {
+            const badge = await browser.action.getBadgeText({ tabId: currentTab.id });
+            const count = parseInt(badge, 10);
+            const badgeEl = qs$('#heroBadge');
+            const heroStats = qs$('#heroStats');
+            if ( badgeEl && !isNaN(count) && count > 0 ) {
+                badgeEl.textContent = badge;
+                badgeEl.style.display = 'inline-flex';
+                if ( heroStats && popupPanelData.level > 0 ) {
+                    heroStats.textContent = `${count} requests blocked on this page`;
+                }
+            }
+        } catch {
+        }
+    }
 
     return true;
 }

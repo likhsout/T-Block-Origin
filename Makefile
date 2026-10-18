@@ -73,7 +73,16 @@ ubol-codemirror:
 dist/build/TBlockOrigin.chromium: tools/make-mv3.sh $(mv3-sources) $(platform) $(mv3-data) dist/build/mv3-data
 	tools/make-mv3.sh chromium
 
-mv3-chromium: ubol-codemirror dist/build/TBlockOrigin.chromium
+share/TBlockOrigin-latest.zip: dist/build/TBlockOrigin.chromium
+	mkdir -p share
+	rm -f share/TBlockOrigin-latest.zip share/TBlockOrigin-chromium.zip
+	cd dist/build/TBlockOrigin.chromium && zip -qr ../../../share/TBlockOrigin-latest.zip .
+	cp share/TBlockOrigin-latest.zip share/TBlockOrigin-chromium.zip
+	@echo "Shareable zip updated: share/TBlockOrigin-latest.zip"
+
+zip: share/TBlockOrigin-latest.zip
+
+mv3-chromium: ubol-codemirror dist/build/TBlockOrigin.chromium share/TBlockOrigin-latest.zip
 
 dist/build/TBlockOrigin.firefox: tools/make-mv3.sh $(mv3-sources) $(platform) $(mv3-data) dist/build/mv3-data
 	tools/make-mv3.sh firefox

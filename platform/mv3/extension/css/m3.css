@@ -134,6 +134,75 @@
     }
 }
 
+/* -------------------------------------------------------------------------- */
+/* Dynamic Accent Themes (Material You)                                       */
+/* -------------------------------------------------------------------------- */
+
+/* Emerald (Privacy Green) */
+:root[data-accent="emerald"] {
+    --md-primary: #006C4C;
+    --md-on-primary: #FFFFFF;
+    --md-primary-container: #89F8C7;
+    --md-on-primary-container: #002114;
+}
+:root.dark[data-accent="emerald"],
+@media (prefers-color-scheme: dark) {
+    :root:not(.light)[data-accent="emerald"] {
+        --md-primary: #6CDBAC;
+        --md-on-primary: #003826;
+        --md-primary-container: #005138;
+        --md-on-primary-container: #89F8C7;
+    }
+}
+
+/* Sapphire (Ocean Blue) */
+:root[data-accent="sapphire"] {
+    --md-primary: #00639B;
+    --md-on-primary: #FFFFFF;
+    --md-primary-container: #CEE5FF;
+    --md-on-primary-container: #001D33;
+}
+:root.dark[data-accent="sapphire"],
+@media (prefers-color-scheme: dark) {
+    :root:not(.light)[data-accent="sapphire"] {
+        --md-primary: #97CBFF;
+        --md-on-primary: #003353;
+        --md-primary-container: #004A75;
+        --md-on-primary-container: #CEE5FF;
+    }
+}
+
+/* Coral Sunset */
+:root[data-accent="coral"] {
+    --md-primary: #B3261E;
+    --md-on-primary: #FFFFFF;
+    --md-primary-container: #F9DEDC;
+    --md-on-primary-container: #410E0B;
+}
+:root.dark[data-accent="coral"],
+@media (prefers-color-scheme: dark) {
+    :root:not(.light)[data-accent="coral"] {
+        --md-primary: #FFB4AB;
+        --md-on-primary: #601410;
+        --md-primary-container: #8C1D18;
+        --md-on-primary-container: #F9DEDC;
+    }
+}
+
+/* OLED Pure Black Mode */
+:root.oled.dark,
+:root.oled:not(.light) {
+    --md-surface: #000000;
+    --md-surface-dim: #000000;
+    --md-surface-container-lowest: #000000;
+    --md-surface-container-low: #070707;
+    --md-surface-container: #0E0E0E;
+    --md-surface-container-high: #151515;
+    --md-surface-container-highest: #1E1E1E;
+    --md-outline: #555555;
+    --md-outline-variant: #2A2A2A;
+}
+
 :root.dark {
     --md-primary: #D0BCFF;
     --md-on-primary: #381E72;
@@ -486,7 +555,8 @@ select:focus {
     position: absolute;
     top: 0;
     transition: background-color var(--md-dur-medium) var(--md-ease),
-                border-color var(--md-dur-medium) var(--md-ease);
+                border-color var(--md-dur-medium) var(--md-ease),
+                box-shadow var(--md-dur-short) var(--md-ease);
     width: 100%;
 }
 
@@ -495,14 +565,26 @@ select:focus {
     border-radius: var(--md-shape-full);
     content: '';
     height: 16px;
-    left: 8px;
+    left: 0;
     position: absolute;
-    top: 8px;
+    top: 50%;
+    transform: translate(8px, -50%);
     transition: transform var(--md-dur-medium) var(--md-ease),
                 background-color var(--md-dur-medium) var(--md-ease),
                 width var(--md-dur-medium) var(--md-ease),
-                height var(--md-dur-medium) var(--md-ease);
+                height var(--md-dur-medium) var(--md-ease),
+                box-shadow var(--md-dur-short) var(--md-ease);
     width: 16px;
+}
+
+.md-switch-row:hover .md-switch::before,
+.md-switch:hover::before {
+    border-color: var(--md-on-surface);
+}
+
+.md-switch-row:hover .md-switch::after,
+.md-switch:hover::after {
+    background-color: var(--md-on-surface-variant);
 }
 
 .md-switch:has(> input:checked)::before {
@@ -512,9 +594,27 @@ select:focus {
 
 .md-switch:has(> input:checked)::after {
     background-color: var(--md-on-primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     height: 24px;
-    transform: translateX(20px);
+    transform: translate(24px, -50%);
     width: 24px;
+}
+
+.md-switch-row:hover .md-switch:has(> input:checked)::before,
+.md-switch:hover:has(> input:checked)::before {
+    background-color: color-mix(in srgb, var(--md-primary) 90%, white);
+    border-color: transparent;
+}
+
+.md-switch:active::after,
+.md-switch-row:active .md-switch::after {
+    width: 28px;
+}
+
+.md-switch:has(> input:checked):active::after,
+.md-switch-row:active .md-switch:has(> input:checked)::after {
+    transform: translate(20px, -50%);
+    width: 28px;
 }
 
 .md-switch:has(> input:focus-visible)::before {
@@ -531,26 +631,47 @@ select:focus {
 .md-switch-row {
     align-items: center;
     color: var(--md-on-surface);
-    column-gap: 12px;
+    column-gap: 16px;
     display: flex;
     justify-content: space-between;
-    min-height: 48px;
-    padding: 4px 0;
+    min-height: 52px;
+    padding: 8px 12px;
+    border-radius: var(--md-shape-m);
+    cursor: pointer;
+    transition: background-color var(--md-dur-short) var(--md-ease);
+    user-select: none;
+}
+
+.md-switch-row:hover {
+    background-color: var(--md-surface-container-high);
+}
+
+.md-switch-row:active {
+    background-color: var(--md-surface-container-highest);
+}
+
+.md-switch-row:has(input[disabled]) {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .md-switch-row > .md-switch-row-label {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    flex: 1;
 }
 
 .md-switch-row > .md-switch-row-label > .md-switch-row-title {
     font: var(--md-type-body-l);
+    font-weight: 500;
 }
 
 .md-switch-row > .md-switch-row-label > .md-switch-row-support {
     color: var(--md-on-surface-variant);
     font: var(--md-type-body-s);
+    line-height: 1.4;
 }
 
 /* -------------------------------------------------------------------------- */

@@ -107,8 +107,70 @@ main {
 }
 
 .md-hero {
-    padding: 4px 0 12px;
+    padding: 6px 0 10px;
     text-align: center;
+}
+
+.md-hero-shield-wrapper {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.md-shield-svg {
+    width: 36px;
+    height: 36px;
+    color: var(--md-primary);
+    transition: color var(--md-dur-medium) var(--md-ease), transform var(--md-dur-short) var(--md-ease);
+}
+
+.md-hero-shield-wrapper[data-level="0"] .md-shield-svg {
+    color: var(--md-outline);
+}
+
+.md-hero-shield-wrapper[data-level="0"] .md-shield-fill {
+    opacity: 0.15;
+}
+
+.md-hero-shield-wrapper[data-level="0"] .md-shield-icon-check {
+    display: none;
+}
+
+.md-hero-badge {
+    position: absolute;
+    top: -2px;
+    right: -6px;
+    background-color: var(--md-error);
+    color: var(--md-on-error);
+    font: var(--md-type-label-s);
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: var(--md-shape-full);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    animation: md-badge-pop 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes md-badge-pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.md-hero-stats {
+    color: var(--md-on-surface-variant);
+    font: var(--md-type-body-s);
+    font-size: 11px;
+    margin-top: 4px;
+    letter-spacing: 0.2px;
 }
 
 #hostname {

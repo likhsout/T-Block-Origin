@@ -107,43 +107,79 @@
     <div class="md-section">
         <h3 data-i18n="behaviorSectionLabel"></h3>
         <div class="md-card md-switch-list">
-            <div class="md-switch-row">
+            <label class="md-switch-row" id="autoReload">
                 <span class="md-switch-row-label">
                     <span class="md-switch-row-title" data-i18n="autoReloadLabel"></span>
                 </span>
-                <label class="md-switch" id="autoReload"><input type="checkbox"></label>
-            </div>
+                <span class="md-switch"><input type="checkbox"></span>
+            </label>
             <div class="md-divider"></div>
-            <div class="md-switch-row">
+            <label class="md-switch-row" id="showBlockedCount">
                 <span class="md-switch-row-label">
                     <span class="md-switch-row-title" data-i18n="showBlockedCountLabel"></span>
                 </span>
-                <label class="md-switch" id="showBlockedCount"><input type="checkbox"></label>
-            </div>
+                <span class="md-switch"><input type="checkbox"></span>
+            </label>
             <div class="md-divider" data-platform-exclude="safari"></div>
-            <div class="md-switch-row" data-platform-exclude="safari">
+            <label class="md-switch-row" id="strictBlockMode" data-platform-exclude="safari">
                 <span class="md-switch-row-label">
                     <span class="md-switch-row-title" data-i18n="enableStrictBlockLabel"></span>
                     <span class="md-switch-row-support" data-i18n="enableStrictBlockLegend"></span>
                 </span>
-                <label class="md-switch" id="strictBlockMode"><input type="checkbox"></label>
-            </div>
+                <span class="md-switch"><input type="checkbox"></span>
+            </label>
             <div class="md-divider"></div>
-            <div class="md-switch-row">
+            <label class="md-switch-row" id="popupBlockMode">
                 <span class="md-switch-row-label">
                     <span class="md-switch-row-title" data-i18n="enablePopupBlockLabel"></span>
                     <span class="md-switch-row-support" data-i18n="enablePopupBlockLegend"></span>
                 </span>
-                <label class="md-switch" id="popupBlockMode"><input type="checkbox"></label>
-            </div>
+                <span class="md-switch"><input type="checkbox"></span>
+            </label>
             <div class="md-divider"></div>
-            <div class="md-switch-row" id="developerMode">
+            <label class="md-switch-row" id="developerMode">
                 <span class="md-switch-row-label">
                     <span class="md-switch-row-title" data-i18n="developerModeLabel"></span>
                     <span class="md-switch-row-support" data-i18n="developerModeLegend"></span>
                 </span>
-                <label class="md-switch"><input type="checkbox"></label>
+                <span class="md-switch"><input type="checkbox"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="md-section" id="appearanceSection">
+        <h3>Appearance</h3>
+        <p class="md-section-intro">Customize the theme accent palette and dark mode contrast.</p>
+        <div class="md-card md-appearance-card">
+            <div class="md-theme-picker">
+                <span class="md-theme-label">Accent Color</span>
+                <div class="md-theme-chips" id="accentPicker">
+                    <button class="md-theme-chip active" type="button" data-accent="purple" title="Purple (Baseline)">
+                        <span class="md-chip-color" style="background:#6750A4;"></span>
+                        <span>Purple</span>
+                    </button>
+                    <button class="md-theme-chip" type="button" data-accent="emerald" title="Emerald (Privacy)">
+                        <span class="md-chip-color" style="background:#006C4C;"></span>
+                        <span>Emerald</span>
+                    </button>
+                    <button class="md-theme-chip" type="button" data-accent="sapphire" title="Sapphire (Blue)">
+                        <span class="md-chip-color" style="background:#00639B;"></span>
+                        <span>Sapphire</span>
+                    </button>
+                    <button class="md-theme-chip" type="button" data-accent="coral" title="Coral (Sunset)">
+                        <span class="md-chip-color" style="background:#BA1A1A;"></span>
+                        <span>Coral</span>
+                    </button>
+                </div>
             </div>
+            <div class="md-divider"></div>
+            <label class="md-switch-row" id="oledMode">
+                <span class="md-switch-row-label">
+                    <span class="md-switch-row-title">OLED Pure Black Mode</span>
+                    <span class="md-switch-row-support">Deep black background for AMOLED / OLED screens in dark mode</span>
+                </span>
+                <span class="md-switch"><input type="checkbox"></span>
+            </label>
         </div>
     </div>
 

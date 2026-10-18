@@ -18,6 +18,7 @@ export default [ includeIgnoreFile(gitignorePath), {
     languageOptions: {
         globals: {
             ...globals.browser,
+            ...globals.webextensions,
             vAPI: "readonly",
         },
         sourceType: "module",
@@ -38,12 +39,13 @@ export default [ includeIgnoreFile(gitignorePath), {
         }],
         "no-control-regex": "off",
         "no-empty": "off",
+        "no-redeclare": ["error", { "builtinGlobals": false }],
         "sort-imports": "error",
         "strict": "error",
     },
 }, {
     files: ["**/*.json"],
-    ignores: ["package-lock.json"],
+    ignores: ["**/package-lock.json"],
     language: "json/json",
     ...json.configs.recommended,
 } ];

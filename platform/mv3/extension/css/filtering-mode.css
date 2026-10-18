@@ -15,11 +15,11 @@
 :root {
     --fm-knob-size: 32px;
     --fm-step: 44px;                             /* spacing between positions */
-    --fm-track-width: calc(3 * var(--fm-step) + var(--fm-knob-size));
     --fm-track-height: 40px;
 }
 
 .filteringModeSlider {
+    --fm-track-width: calc(3 * var(--fm-step) + var(--fm-knob-size));
     align-items: center;
     background-color: var(--md-surface-container-highest);
     border-radius: var(--md-shape-full);
@@ -28,6 +28,7 @@
     height: var(--fm-track-height);
     justify-content: space-between;
     margin: 0 auto;
+    padding: 0 calc(var(--fm-knob-size) / 2);
     position: relative;
     width: var(--fm-track-width);
 }
@@ -52,7 +53,7 @@
     display: block;
     flex: 0 0 auto;
     height: 6px;
-    margin: 0 auto;
+    margin: 0;
     position: relative;
     width: 6px;
     z-index: 1;
