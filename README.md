@@ -43,7 +43,7 @@ Paired with a completely bespoke **Material Design 3 (M3)** interface, T-Block O
 
 ---
 
-## ✨ Key Features
+## <a id="key-features"></a>✨ Key Features
 
 ### ⚡ True Native Manifest V3 Performance
 - **Declarative Filtering:** Request blocking occurs inside the browser engine before network sockets open.
@@ -76,7 +76,7 @@ Every site can be tuned individually to match your balance between privacy and c
 
 ---
 
-## 🚀 Quick Install
+## <a id="quick-install"></a>🚀 Quick Install
 
 You don't need to build from source to use T-Block Origin. Download the pre-built bundle directly from **[GitHub Releases](https://github.com/likhsout/T-Block-Origin/releases/latest)** or from the [`share/`](share/) folder:
 
@@ -92,7 +92,7 @@ You don't need to build from source to use T-Block Origin. Download the pre-buil
 
 ---
 
-## 📊 Filtering Modes
+## <a id="filtering-modes"></a>📊 Filtering Modes
 
 | Level | Mode | What It Blocks | Recommended For |
 | :---: | :--- | :--- | :--- |
@@ -103,7 +103,7 @@ You don't need to build from source to use T-Block Origin. Download the pre-buil
 
 ---
 
-## 🎨 Themes & Appearance
+## <a id="themes--appearance"></a>🎨 Themes & Appearance
 
 T-Block Origin includes full Material Design 3 theming support, customizable directly from the Dashboard:
 
@@ -115,7 +115,7 @@ T-Block Origin includes full Material Design 3 theming support, customizable dir
 
 ---
 
-## 🛠️ Building from Source
+## <a id="building-from-source"></a>🛠️ Building from Source
 
 ### Prerequisites
 - **Node.js** (v20+) & **npm**
@@ -147,7 +147,7 @@ npm test        # Comprehensive build and manifest verification
 
 ---
 
-## 📁 Project Structure
+## <a id="project-structure"></a>📁 Project Structure
 
 ```text
 T-Block-Origin/
@@ -170,7 +170,7 @@ T-Block-Origin/
 
 ---
 
-## 📜 Attribution & Acknowledgements
+## <a id="attribution--acknowledgements"></a>📜 Attribution & Acknowledgements
 
 **T-Block Origin** is licensed under the [GNU General Public License v3.0 (GPLv3)](LICENSE.txt).
 
@@ -180,6 +180,6 @@ We express our sincere admiration and gratitude to Raymond Hill and the open-sou
 
 ---
 
-## 📄 License
+## <a id="license"></a>📄 License
 
 This project is licensed under the terms of the **GNU General Public License v3.0**. See the [`LICENSE.txt`](LICENSE.txt) file for complete details.
