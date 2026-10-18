@@ -73,16 +73,17 @@ ubol-codemirror:
 dist/build/TBlockOrigin.chromium: tools/make-mv3.sh $(mv3-sources) $(platform) $(mv3-data) dist/build/mv3-data
 	tools/make-mv3.sh chromium
 
-share/TBlockOrigin-latest.zip: dist/build/TBlockOrigin.chromium
+version := $(shell node -p "require('./package.json').version" 2>/dev/null || echo "1.0.0")
+
+share/TBlockOrigin-v$(version).zip: dist/build/TBlockOrigin.chromium
 	mkdir -p share
-	rm -f share/TBlockOrigin-latest.zip share/TBlockOrigin-chromium.zip
-	cd dist/build/TBlockOrigin.chromium && zip -qr ../../../share/TBlockOrigin-latest.zip .
-	cp share/TBlockOrigin-latest.zip share/TBlockOrigin-chromium.zip
-	@echo "Shareable zip updated: share/TBlockOrigin-latest.zip"
+	rm -f share/TBlockOrigin-*.zip
+	cd dist/build/TBlockOrigin.chromium && zip -qr ../../../share/TBlockOrigin-v$(version).zip .
+	@echo "Shareable zip updated: share/TBlockOrigin-v$(version).zip"
 
-zip: share/TBlockOrigin-latest.zip
+zip: share/TBlockOrigin-v$(version).zip
 
-mv3-chromium: ubol-codemirror dist/build/TBlockOrigin.chromium share/TBlockOrigin-latest.zip
+mv3-chromium: ubol-codemirror dist/build/TBlockOrigin.chromium share/TBlockOrigin-v$(version).zip
 
 dist/build/TBlockOrigin.firefox: tools/make-mv3.sh $(mv3-sources) $(platform) $(mv3-data) dist/build/mv3-data
 	tools/make-mv3.sh firefox

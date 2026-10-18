@@ -74,7 +74,7 @@ Every site can be tuned individually to match your balance between privacy and c
 
 You don't need to build from source to use T-Block Origin. Download the pre-built bundle directly from **[GitHub Releases](https://github.com/likhsout/T-Block-Origin/releases/latest)** or from the [`share/`](share/) folder:
 
-1. **Download:** Get the latest build archive: **[`TBlockOrigin-chromium.zip`](https://github.com/likhsout/T-Block-Origin/releases/latest)** (or local [`share/TBlockOrigin-latest.zip`](share/TBlockOrigin-latest.zip)).
+1. **Download:** Get the latest release: **[`TBlockOrigin-v1.0.0.zip`](https://github.com/likhsout/T-Block-Origin/releases/latest)** (or local [`share/TBlockOrigin-v1.0.0.zip`](share/TBlockOrigin-v1.0.0.zip)).
 2. **Extract:** Unzip the downloaded archive into a folder on your computer.
 3. **Open Extensions Page:** In your browser, navigate to:
    - **Google Chrome / Brave:** `chrome://extensions`
@@ -131,7 +131,7 @@ make mv3-chromium
 
 ### Output Directories
 - **Unpacked Extension:** `dist/build/TBlockOrigin.chromium/`
-- **Shareable ZIP Bundle:** `share/TBlockOrigin-latest.zip` (automatically updated on every build)
+- **Shareable ZIP Archive:** `share/TBlockOrigin-v1.0.0.zip` (automatically updated on every build)
 
 ### Linting and Automated Checks
 ```bash
@@ -152,9 +152,9 @@ T-Block-Origin/
 │           ├── js/         # Extension logic, settings, and theme handlers
 │           ├── img/        # Brand assets, vectors, and shield icons
 │           └── lib/        # CodeMirror 6 filter editor bundle
-├── share/                  # Pre-packaged shareable ZIP releases
-│   ├── TBlockOrigin-latest.zip
-│   └── TBlockOrigin-chromium.zip
+├── share/                  # Pre-packaged shareable ZIP release
+│   ├── README.md           # Quick install guide
+│   └── TBlockOrigin-v1.0.0.zip
 ├── tools/                  # Build scripts and ruleset compiler
 ├── dist/                   # Build artifacts (generated during make)
 ├── Makefile                # Build automation targets

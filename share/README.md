@@ -1,15 +1,14 @@
 # T-Block Origin - Shareable Builds
 
-This directory contains pre-packaged, ready-to-install ZIP archives of **T-Block Origin**:
+This directory contains the pre-packaged, ready-to-install ZIP archive of **T-Block Origin**:
 
-- **[`TBlockOrigin-latest.zip`](TBlockOrigin-latest.zip)**: Always updated with the latest compiled build.
-- **[`TBlockOrigin-chromium.zip`](TBlockOrigin-chromium.zip)**: Packaged release for Chromium-based browsers (Google Chrome, Brave, Microsoft Edge, Vivaldi, Opera, Arc, etc.).
+- **[`TBlockOrigin-v1.0.0.zip`](TBlockOrigin-v1.0.0.zip)**: Official release archive packaged for Chromium-based browsers (Google Chrome, Brave, Microsoft Edge, Vivaldi, Opera, Arc, etc.).
 
 ---
 
 ## 🚀 How to Install (Quick & Easy)
 
-1. Download or extract [`TBlockOrigin-latest.zip`](TBlockOrigin-latest.zip) into a folder on your system.
+1. Download or extract [`TBlockOrigin-v1.0.0.zip`](TBlockOrigin-v1.0.0.zip) into a folder on your system.
 2. Open your Chromium browser and navigate to:
    - **Chrome / Brave:** `chrome://extensions`
    - **Microsoft Edge:** `edge://extensions`
@@ -21,9 +20,9 @@ This directory contains pre-packaged, ready-to-install ZIP archives of **T-Block
 
 ---
 
-## 🛠️ Updating the Shareable Archives
+## 🛠️ Updating the Shareable Archive
 
-To re-compile and re-package the latest build into this directory:
+To re-compile and re-package the latest version into this directory:
 
 ```bash
 # Package the current build into share/
