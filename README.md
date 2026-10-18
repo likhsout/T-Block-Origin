@@ -37,6 +37,10 @@ Designed from the ground up for **Manifest V3**, T-Block Origin runs natively in
 
 Paired with a completely bespoke **Material Design 3 (M3)** interface, T-Block Origin delivers fluid micro-animations, customizable dynamic themes, OLED pure black styling, and intuitive site-by-site control.
 
+<p align="center">
+  <img src="platform/mv3/extension/img/showcase.svg" alt="T-Block Origin Material Design 3 Showcase" width="100%">
+</p>
+
 ---
 
 ## ✨ Key Features
@@ -48,6 +52,8 @@ Paired with a completely bespoke **Material Design 3 (M3)** interface, T-Block O
 
 ### 🎨 Modern Material Design 3 Interface
 - **Hero Protection Panel:** Displays live protection state, the active filtering tier, and a real-time count of blocked requests.
+- **🛡️ 1-Click Shield Power Switch:** Click the hero shield at any time to toggle protection on/off with tactile feedback.
+- **⏱️ Anti-Adblock Snooze Timer:** Pause protection for 30s or 5m with a live countdown ticker that automatically resumes.
 - **Fluid Stepped Slider:** Smooth 4-position slider with calibrated travel for intuitive site filtering adjustment.
 - **Tactile Settings Rows:** Interactive setting items with M3 switches, responsive hover states, and smooth spring animations.
 - **Dynamic Colorways:** Multiple Material You palettes (Baseline Purple, Emerald Privacy, Sapphire Ocean, Coral Energy) and a true 100% OLED Pure Black mode.

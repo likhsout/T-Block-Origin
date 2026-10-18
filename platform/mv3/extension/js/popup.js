@@ -323,6 +323,149 @@ dom.on('#gotoUnpicker', 'click', ( ) => {
 
 /******************************************************************************/
 
+let activePauseState = null;
+let pauseTimerId = null;
+
+function isHostPaused() {
+    return activePauseState !== null && activePauseState.resumeAt > Date.now();
+}
+
+async function pauseProtection(durationMs) {
+    if ( tabURL.hostname === '' ) { return; }
+    dom.cl.add(dom.body, 'busy');
+    try {
+        const res = await sendMessage({
+            what: 'pauseProtection',
+            hostname: tabURL.hostname,
+            durationMs,
+        });
+        if ( res?.success ) {
+            setFilteringMode(0);
+            updatePauseUI({ resumeAt: res.resumeAt, previousLevel: res.previousLevel });
+            if ( popupPanelData.autoReload && tabURL.href === currentTab.url ) {
+                browser.tabs.reload(currentTab.id);
+            }
+        }
+    } finally {
+        dom.cl.remove(dom.body, 'busy');
+    }
+}
+
+async function resumeProtection() {
+    if ( tabURL.hostname === '' ) { return; }
+    dom.cl.add(dom.body, 'busy');
+    try {
+        const res = await sendMessage({
+            what: 'resumeProtection',
+            hostname: tabURL.hostname,
+        });
+        if ( res?.success ) {
+            setFilteringMode(res.level);
+            updatePauseUI(null);
+            if ( popupPanelData.autoReload && tabURL.href === currentTab.url ) {
+                browser.tabs.reload(currentTab.id);
+            }
+        }
+    } finally {
+        dom.cl.remove(dom.body, 'busy');
+    }
+}
+
+function updatePauseUI(pauseState) {
+    activePauseState = pauseState;
+    if ( pauseTimerId !== null ) {
+        clearInterval(pauseTimerId);
+        pauseTimerId = null;
+    }
+    const pauseBtn = qs$('#pauseButton');
+    const pauseBtnText = qs$('#pauseBtnText');
+    const heroShield = qs$('#heroShield');
+    const heroStats = qs$('#heroStats');
+
+    if ( pauseState && pauseState.resumeAt > Date.now() ) {
+        if ( heroShield ) {
+            heroShield.classList.add('paused');
+        }
+        if ( pauseBtn ) {
+            pauseBtn.classList.add('paused');
+        }
+        const tick = () => {
+            const msLeft = pauseState.resumeAt - Date.now();
+            if ( msLeft <= 0 ) {
+                resumeProtection();
+                return;
+            }
+            const totalSec = Math.ceil(msLeft / 1000);
+            const m = Math.floor(totalSec / 60);
+            const s = totalSec % 60;
+            const timeStr = `${m}:${s < 10 ? '0' : ''}${s}`;
+            if ( pauseBtnText ) {
+                pauseBtnText.textContent = `Paused (${timeStr}) • Resume`;
+            }
+            if ( heroStats ) {
+                heroStats.textContent = `Protection paused for anti-adblock (${timeStr} left)`;
+            }
+        };
+        tick();
+        pauseTimerId = setInterval(tick, 1000);
+    } else {
+        activePauseState = null;
+        if ( heroShield ) {
+            heroShield.classList.remove('paused');
+        }
+        if ( pauseBtn ) {
+            pauseBtn.classList.remove('paused');
+        }
+        if ( pauseBtnText ) {
+            pauseBtnText.textContent = 'Pause';
+        }
+    }
+}
+
+dom.on('#heroShield', 'click', async () => {
+    if ( isHostPaused() ) {
+        await resumeProtection();
+        return;
+    }
+    const modeSlider = qs$('.filteringModeSlider');
+    const currentLevel = parseInt(modeSlider.dataset.level, 10);
+    const targetLevel = currentLevel > 0 ? 0 : 2;
+    modeSlider.dataset.levelBefore = currentLevel;
+    setFilteringMode(targetLevel, true);
+});
+
+dom.on('#heroShield', 'keydown', (e) => {
+    if ( e.key === 'Enter' || e.key === ' ' ) {
+        e.preventDefault();
+        qs$('#heroShield')?.click();
+    }
+});
+
+dom.on('#pauseButton', 'click', async (e) => {
+    e.stopPropagation();
+    if ( isHostPaused() ) {
+        await resumeProtection();
+        return;
+    }
+    const menu = qs$('#pauseMenu');
+    menu?.classList.toggle('hidden');
+});
+
+dom.on('.md-pause-option', 'click', async (e) => {
+    e.stopPropagation();
+    qs$('#pauseMenu')?.classList.add('hidden');
+    const durationMs = parseInt(e.currentTarget.dataset.duration, 10);
+    if ( !isNaN(durationMs) && durationMs > 0 ) {
+        await pauseProtection(durationMs);
+    }
+});
+
+document.addEventListener('click', () => {
+    qs$('#pauseMenu')?.classList.add('hidden');
+});
+
+/******************************************************************************/
+
 async function init() {
     const [ tab ] = await browser.tabs.query({
         active: true,
@@ -356,6 +499,7 @@ async function init() {
     renderAdminRules();
 
     setFilteringMode(popupPanelData.level);
+    updatePauseUI(popupPanelData.pauseState || null);
 
     dom.text('#hostname', punycode.toUnicode(tabURL.hostname));
 
@@ -380,7 +524,7 @@ async function init() {
             if ( badgeEl && !isNaN(count) && count > 0 ) {
                 badgeEl.textContent = badge;
                 badgeEl.style.display = 'inline-flex';
-                if ( heroStats && popupPanelData.level > 0 ) {
+                if ( heroStats && popupPanelData.level > 0 && !isHostPaused() ) {
                     heroStats.textContent = `${count} requests blocked on this page`;
                 }
             }

@@ -290,6 +290,37 @@ async function processDeferredTasks() {
 
 /******************************************************************************/
 
+const pausedHosts = new Map();
+
+async function handlePauseProtection(hostname, durationMs) {
+    let beforeLevel = await getFilteringMode(hostname);
+    if ( beforeLevel === 0 ) { beforeLevel = 2; }
+    const resumeAt = Date.now() + durationMs;
+    pausedHosts.set(hostname, { resumeAt, previousLevel: beforeLevel });
+    await setFilteringMode(hostname, 0);
+    await Promise.all([ registerContentScripts(), registerUserScripts() ]);
+    try {
+        browser.alarms.create(`tblock_resume:${hostname}`, { when: resumeAt });
+    } catch {
+    }
+    return { success: true, resumeAt, previousLevel: beforeLevel };
+}
+
+async function handleResumeProtection(hostname) {
+    const pauseInfo = pausedHosts.get(hostname);
+    const targetLevel = pauseInfo?.previousLevel ?? 2;
+    pausedHosts.delete(hostname);
+    try {
+        browser.alarms.clear(`tblock_resume:${hostname}`);
+    } catch {
+    }
+    await setFilteringMode(hostname, targetLevel);
+    await Promise.all([ registerContentScripts(), registerUserScripts() ]);
+    return { success: true, level: targetLevel };
+}
+
+/******************************************************************************/
+
 async function onMessage(request, sender) {
 
     const tabId = sender?.tab?.id ?? false;
@@ -490,6 +521,11 @@ async function onMessage(request, sender) {
         return setDeveloperMode(request.state);
 
     case 'popupPanelData': {
+        const pauseInfo = pausedHosts.get(request.hostname);
+        const isPaused = pauseInfo && Date.now() < pauseInfo.resumeAt;
+        if ( pauseInfo && !isPaused ) {
+            pausedHosts.delete(request.hostname);
+        }
         const results = await Promise.all([
             hasBroadHostPermissions(),
             getFilteringMode(request.hostname),
@@ -504,8 +540,15 @@ async function onMessage(request, sender) {
             developerMode: rulesetConfig.developerMode,
             disabledFeatures: results[2],
             hasCustomFilters: results[3],
+            pauseState: isPaused ? { resumeAt: pauseInfo.resumeAt, previousLevel: pauseInfo.previousLevel } : null,
         };
     }
+
+    case 'pauseProtection':
+        return handlePauseProtection(request.hostname, request.durationMs);
+
+    case 'resumeProtection':
+        return handleResumeProtection(request.hostname);
 
     case 'getFilteringMode': {
         return getFilteringMode(request.hostname);
@@ -887,6 +930,33 @@ browser.commands.onCommand.addListener((...args) => {
 });
 
 browser.alarms.onAlarm.addListener(alarm => {
+    if ( alarm.name.startsWith('tblock_resume:') ) {
+        const hostname = alarm.name.slice('tblock_resume:'.length);
+        const pauseInfo = pausedHosts.get(hostname);
+        if ( pauseInfo ) {
+            const targetLevel = pauseInfo.previousLevel || 2;
+            pausedHosts.delete(hostname);
+            isFullyInitialized.then(async () => {
+                await setFilteringMode(hostname, targetLevel);
+                await Promise.all([ registerContentScripts(), registerUserScripts() ]);
+                if ( rulesetConfig.autoReload ) {
+                    try {
+                        const tabs = await browser.tabs.query({});
+                        for ( const tab of tabs ) {
+                            try {
+                                if ( new URL(tab.url).hostname === hostname ) {
+                                    browser.tabs.reload(tab.id);
+                                }
+                            } catch {
+                            }
+                        }
+                    } catch {
+                    }
+                }
+            });
+        }
+        return;
+    }
     if ( alarm.name !== 'deferredJobs' ) { return; }
     isFullyInitialized.then(( ) => {
         if ( process.wakeupRun === false && process.firstAlarm !== true ) {

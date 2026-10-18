@@ -35,7 +35,7 @@
 
 <main>
     <section class="md-hero needData">
-        <div class="md-hero-shield-wrapper" id="heroShield">
+        <div class="md-hero-shield-wrapper" id="heroShield" role="button" tabindex="0" title="Click to toggle protection on this site">
             <svg class="md-shield-svg" viewBox="0 0 24 24">
                 <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z" fill="none" stroke="currentColor" stroke-width="2"/>
                 <path class="md-shield-fill" d="M12 4.18l6 2.25v4.66c0 4.1-2.73 7.93-6 8.91-3.27-.98-6-4.81-6-8.91V6.43l6-2.25z" fill="currentColor"/>
@@ -48,6 +48,18 @@
             <span class="md-mode-name"></span><span class="md-mode-preview"></span>
         </div>
         <div id="heroStats" class="md-hero-stats">Protection Active</div>
+        <div id="pauseControl" class="md-pause-control needData">
+            <button id="pauseButton" class="md-pause-btn" type="button" title="Temporarily pause protection on this site">
+                <svg class="md-pause-icon" viewBox="0 0 24 24" width="14" height="14">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/>
+                </svg>
+                <span id="pauseBtnText">Pause</span>
+            </button>
+            <div id="pauseMenu" class="md-pause-menu hidden">
+                <button class="md-pause-option" data-duration="30000" type="button">Pause for 30s</button>
+                <button class="md-pause-option" data-duration="300000" type="button">Pause for 5m</button>
+            </div>
+        </div>
     </section>
 
     <div class="filteringModeSlider needData" role="radiogroup" aria-label="popupFilteringModeLabel">
