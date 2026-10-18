@@ -36,6 +36,7 @@
 <main>
     <section class="md-hero needData">
         <div class="md-hero-shield-wrapper" id="heroShield" role="button" tabindex="0" title="Click to toggle protection on this site">
+            <div class="md-hero-shield-glow"></div>
             <svg class="md-shield-svg" viewBox="0 0 24 24">
                 <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z" fill="none" stroke="currentColor" stroke-width="2"/>
                 <path class="md-shield-fill" d="M12 4.18l6 2.25v4.66c0 4.1-2.73 7.93-6 8.91-3.27-.98-6-4.81-6-8.91V6.43l6-2.25z" fill="currentColor"/>
@@ -44,13 +45,15 @@
             <span id="heroBadge" class="md-hero-badge"></span>
         </div>
         <div id="hostname"><span></span></div>
-        <div id="filteringModeText" class="md-mode">
-            <span class="md-mode-name"></span><span class="md-mode-preview"></span>
+        <div id="filteringModeText" class="md-mode-pill">
+            <span class="md-mode-dot"></span>
+            <span class="md-mode-name"></span>
+            <span class="md-mode-preview"></span>
         </div>
         <div id="heroStats" class="md-hero-stats">Protection Active</div>
         <div id="pauseControl" class="md-pause-control needData">
             <button id="pauseButton" class="md-pause-btn" type="button" title="Temporarily pause protection on this site">
-                <svg class="md-pause-icon" viewBox="0 0 24 24" width="14" height="14">
+                <svg class="md-pause-icon" viewBox="0 0 24 24" width="13" height="13">
                     <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/>
                 </svg>
                 <span id="pauseBtnText">Pause</span>
@@ -62,12 +65,20 @@
         </div>
     </section>
 
-    <div class="filteringModeSlider needData" role="radiogroup" aria-label="popupFilteringModeLabel">
-        <div class="filteringModeButton"><div></div></div>
-        <span data-level="0" aria-label="filteringMode0Name"></span>
-        <span data-level="1" aria-label="filteringMode1Name"></span>
-        <span data-level="2" aria-label="filteringMode2Name"></span>
-        <span data-level="3" aria-label="filteringMode3Name"></span>
+    <div class="md-slider-container needData">
+        <div class="filteringModeSlider" role="radiogroup" aria-label="popupFilteringModeLabel">
+            <div class="filteringModeButton"><div></div></div>
+            <span data-level="0" aria-label="filteringMode0Name"></span>
+            <span data-level="1" aria-label="filteringMode1Name"></span>
+            <span data-level="2" aria-label="filteringMode2Name"></span>
+            <span data-level="3" aria-label="filteringMode3Name"></span>
+        </div>
+        <div class="md-slider-labels">
+            <span data-level="0">Off</span>
+            <span data-level="1">Basic</span>
+            <span data-level="2">Optimal</span>
+            <span data-level="3">Complete</span>
+        </div>
     </div>
 
     <p id="filteringModeDescription" class="md-mode-description needData"></p>
@@ -75,20 +86,24 @@
     <div class="toolMenu localTools needHTTP">
         <h4 data-i18n="popupLocalToolsLabel"></h4>
         <button id="gotoZapper" class="tool md-tool enabled" type="button">
-            <span class="fa-icon">bolt</span>
+            <span class="md-tool-icon-wrap zap"><span class="fa-icon">bolt</span></span>
             <span class="md-tool-label" data-i18n="zapperTipEnter">_</span>
+            <span class="md-tool-arrow">›</span>
         </button>
         <button id="gotoPicker" class="tool md-tool enabled" type="button">
-            <span class="fa-icon">eye-slash</span>
+            <span class="md-tool-icon-wrap pick"><span class="fa-icon">eye-slash</span></span>
             <span class="md-tool-label" data-i18n="pickerTipEnter">_</span>
+            <span class="md-tool-arrow">›</span>
         </button>
         <button id="gotoUnpicker" class="tool md-tool" type="button">
-            <span class="fa-icon">eye-open</span>
+            <span class="md-tool-icon-wrap unpick"><span class="fa-icon">eye-open</span></span>
             <span class="md-tool-label" data-i18n="unpickerTipEnter">_</span>
+            <span class="md-tool-arrow">›</span>
         </button>
         <button id="gotoReport" class="tool md-tool enabled" type="button">
-            <span class="fa-icon">comment-alt</span>
+            <span class="md-tool-icon-wrap report"><span class="fa-icon">comment-alt</span></span>
             <span class="md-tool-label" data-i18n="popupTipReport">_</span>
+            <span class="md-tool-arrow">›</span>
         </button>
     </div>
 </main>

@@ -69,9 +69,13 @@ async function setFilteringMode(level, commit = false) {
             heroStats.textContent = 'Complete Protection Active';
         }
     }
+    const sliderLabels = qs$('.md-slider-labels');
+    if ( sliderLabels ) {
+        sliderLabels.dataset.level = level;
+    }
     if ( qs$('.filteringModeSlider.moving') === null ) {
         dom.text(
-            '#filteringModeText > span:nth-of-type(1)',
+            '#filteringModeText .md-mode-name',
             i18n$(`filteringMode${level}Name`)
         );
         renderModeDescription(level);
@@ -112,7 +116,7 @@ async function commitFilteringMode() {
         }
     }
     dom.text(
-        '#filteringModeText > span:nth-of-type(1)',
+        '#filteringModeText .md-mode-name',
         i18n$(`filteringMode${afterLevel}Name`)
     );
     const actualLevel = await sendMessage({
@@ -152,7 +156,7 @@ async function commitFilteringMode() {
         const modeSlider = qs$('.filteringModeSlider');
         if ( `${level}` === modeSlider.dataset.level ) { return; }
         dom.text(
-            '#filteringModeText > span:nth-of-type(2)',
+            '#filteringModeText .md-mode-preview',
             i18n$(`filteringMode${level}Name`)
         );
         setFilteringMode(level);
@@ -171,7 +175,7 @@ async function commitFilteringMode() {
         dom.cl.remove(modeSlider, 'moving');
         self.removeEventListener('mousemove', moveAsync, { capture: true });
         self.removeEventListener('mouseup', stop, { capture: true });
-        dom.text('#filteringModeText > span:nth-of-type(2)', '');
+        dom.text('#filteringModeText .md-mode-preview', '');
         commitFilteringMode();
         ev.stopPropagation();
         ev.preventDefault();
@@ -204,9 +208,9 @@ async function commitFilteringMode() {
 }
 
 dom.on(
-    '.filteringModeSlider',
+    '.filteringModeSlider, .md-slider-labels',
     'click',
-    '.filteringModeSlider span[data-level]',
+    'span[data-level]',
     ev => {
         const modeSlider = qs$('.filteringModeSlider');
         modeSlider.dataset.levelBefore = modeSlider.dataset.level;
@@ -217,24 +221,24 @@ dom.on(
 );
 
 if ( dom.cl.has(dom.html, 'mobile') === false ) {
-    dom.on('.filteringModeSlider',
+    dom.on('.filteringModeSlider, .md-slider-labels',
         'mouseenter',
-        '.filteringModeSlider span[data-level]',
+        'span[data-level]',
         ev => {
             const span = ev.target;
             const level = parseInt(span.dataset.level, 10);
-            dom.text('#filteringModeText > span:nth-of-type(2)',
+            dom.text('#filteringModeText .md-mode-preview',
                 i18n$(`filteringMode${level}Name`)
             );
             renderModeDescription(level);
         }
     );
 
-    dom.on('.filteringModeSlider',
+    dom.on('.filteringModeSlider, .md-slider-labels',
         'mouseleave',
-        '.filteringModeSlider span[data-level]',
+        'span[data-level]',
         ( ) => {
-            dom.text('#filteringModeText > span:nth-of-type(2)', '');
+            dom.text('#filteringModeText .md-mode-preview', '');
             const modeSlider = qs$('.filteringModeSlider');
             renderModeDescription(parseInt(modeSlider.dataset.level, 10) || 0);
         }

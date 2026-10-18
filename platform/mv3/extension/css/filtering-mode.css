@@ -2,8 +2,8 @@
 
     T-Block Origin — filtering mode slider
 
-    A Material 3 style "stepped" slider. Four positions, one knob, and a
-    connecting rail so the discrete levels read at a glance.
+    A precision-engineered stepped slider with discrete levels, glowing stops,
+    and a smooth, tactile jewel knob.
 
     Geometry contract with js/popup.js: the horizontal distance between two
     neighbouring knob positions must equal (track-width - knob-size) / 3,
@@ -13,15 +13,16 @@
 */
 
 :root {
-    --fm-knob-size: 32px;
-    --fm-step: 44px;                             /* spacing between positions */
-    --fm-track-height: 40px;
+    --fm-knob-size: 26px;
+    --fm-step: 48px;                             /* spacing between positions */
+    --fm-track-height: 32px;
+    --fm-track-width: calc(3 * var(--fm-step) + var(--fm-knob-size));
 }
 
 .filteringModeSlider {
-    --fm-track-width: calc(3 * var(--fm-step) + var(--fm-knob-size));
     align-items: center;
-    background-color: var(--md-surface-container-highest);
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: var(--md-shape-full);
     box-sizing: border-box;
     display: flex;
@@ -31,13 +32,15 @@
     padding: 0 calc(var(--fm-knob-size) / 2);
     position: relative;
     width: var(--fm-track-width);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 /* Connecting rail */
 .filteringModeSlider::before {
-    background-color: var(--md-outline-variant);
+    background-color: rgba(255, 255, 255, 0.12);
     content: '';
-    height: 2px;
+    height: 3px;
+    border-radius: 2px;
     left: calc(var(--fm-knob-size) / 2);
     position: absolute;
     right: calc(var(--fm-knob-size) / 2);
@@ -47,7 +50,7 @@
 
 /* Step stops */
 .filteringModeSlider > span[data-level] {
-    background-color: var(--md-outline-variant);
+    background-color: rgba(255, 255, 255, 0.25);
     border-radius: var(--md-shape-full);
     cursor: pointer;
     display: block;
@@ -57,10 +60,12 @@
     position: relative;
     width: 6px;
     z-index: 1;
+    transition: all var(--md-dur-short) var(--md-ease);
 }
 
 .filteringModeSlider > span[data-level]:hover {
-    background-color: var(--md-outline);
+    background-color: #ffffff;
+    transform: scale(1.3);
 }
 
 .filteringModeSlider.moving > span[data-level] {
@@ -76,30 +81,37 @@
     top: calc((var(--fm-track-height) - var(--fm-knob-size)) / 2);
     width: var(--fm-knob-size);
     z-index: 2;
+    cursor: grab;
+}
+
+.filteringModeSlider.moving .filteringModeButton {
+    cursor: grabbing;
 }
 
 .filteringModeButton > div {
-    background-color: var(--md-primary);
+    background: linear-gradient(135deg, var(--md-primary), color-mix(in srgb, var(--md-primary) 70%, #000));
     border-radius: var(--md-shape-full);
-    box-shadow: var(--md-elev-1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45), inset 0 1px 1.5px rgba(255, 255, 255, 0.5), 0 0 12px color-mix(in srgb, var(--md-primary) 35%, transparent);
     box-sizing: border-box;
     height: 100%;
-    transition: background-color var(--md-dur-medium) var(--md-ease);
+    transition: background var(--md-dur-medium) var(--md-ease), transform var(--md-dur-short) var(--md-ease);
     width: 100%;
 }
 
 .filteringModeSlider.moving .filteringModeButton > div,
 .filteringModeButton > div:hover {
-    filter: brightness(1.06);
+    filter: brightness(1.12);
+    transform: scale(1.04);
 }
 
 .filteringModeSlider[data-level="0"] .filteringModeButton > div {
-    background-color: var(--md-outline);
+    background: linear-gradient(135deg, #64748b, #334155);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
 }
 
 .filteringModeSlider[data-level="0"] > span[data-level],
 .filteringModeSlider[data-level="0"]::before {
-    background-color: color-mix(in srgb, var(--md-outline) 45%, var(--md-surface-container-highest));
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 /* Discrete step positions; must match --fm-step */
