@@ -11,8 +11,8 @@
 <p align="center">
   <a href="https://github.com/likhsout/T-Block-Origin/blob/master/LICENSE.txt"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg?style=flat-square" alt="License: GPL v3"></a>
   <a href="https://developer.chrome.com/docs/extensions/develop/migrate"><img src="https://img.shields.io/badge/Manifest-V3-success.svg?style=flat-square" alt="Manifest V3 Ready"></a>
-  <a href="https://m3.material.io/"><img src="https://img.shields.io/badge/Design-Material%203-6750A4.svg?style=flat-square" alt="Material Design 3"></a>
-  <a href="share/TBlockOrigin-latest.zip"><img src="https://img.shields.io/badge/Download-Latest%20ZIP-orange.svg?style=flat-square" alt="Download Latest ZIP"></a>
+  <a href="https://github.com/likhsout/T-Block-Origin/releases/latest"><img src="https://img.shields.io/github/v/release/likhsout/T-Block-Origin?color=blue&style=flat-square" alt="GitHub Release"></a>
+  <a href="https://github.com/likhsout/T-Block-Origin/releases/latest"><img src="https://img.shields.io/badge/Download-Release%20ZIP-orange.svg?style=flat-square" alt="Download Release ZIP"></a>
 </p>
 
 <p align="center">
@@ -72,9 +72,9 @@ Every site can be tuned individually to match your balance between privacy and c
 
 ## 🚀 Quick Install
 
-You don't need to build from source to use T-Block Origin. Pre-packaged, shareable ZIP bundles are always kept ready in the [`share/`](share/) folder:
+You don't need to build from source to use T-Block Origin. Download the pre-built bundle directly from **[GitHub Releases](https://github.com/likhsout/T-Block-Origin/releases/latest)** or from the [`share/`](share/) folder:
 
-1. **Download:** Get the latest build archive: **[`share/TBlockOrigin-latest.zip`](share/TBlockOrigin-latest.zip)**.
+1. **Download:** Get the latest build archive: **[`TBlockOrigin-chromium.zip`](https://github.com/likhsout/T-Block-Origin/releases/latest)** (or local [`share/TBlockOrigin-latest.zip`](share/TBlockOrigin-latest.zip)).
 2. **Extract:** Unzip the downloaded archive into a folder on your computer.
 3. **Open Extensions Page:** In your browser, navigate to:
    - **Google Chrome / Brave:** `chrome://extensions`
