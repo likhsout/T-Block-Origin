@@ -81,9 +81,7 @@ async function setFilteringMode(level, commit = false) {
         renderModeDescription(level);
     }
     if ( commit !== true ) { return; }
-    dom.cl.add(dom.body, 'busy');
     await commitFilteringMode();
-    dom.cl.remove(dom.body, 'busy');
 }
 
 async function commitFilteringMode() {
@@ -141,64 +139,86 @@ async function commitFilteringMode() {
 
 {
     let mx0 = 0;
-    let mx1 = 0;
     let l0 = 0;
     let lMax = 0;
-    let timer;
+    let step = 0;
+    let isRTL = false;
+    let modeButton = null;
+    let modeSlider = null;
+    let pendingLevel = -1;
 
-    const move = ( ) => {
-        timer = undefined;
-        const l1 = Math.min(Math.max(l0 + mx1 - mx0, 0), lMax);
-        let level = Math.floor(l1 * BLOCKING_MODE_MAX / lMax);
-        if ( qs$('body[dir="rtl"]') !== null ) {
-            level = 3 - level;
+    const move = ev => {
+        if ( !modeSlider || dom.cl.has(modeSlider, 'moving') === false ) { return; }
+        const deltaX = isRTL ? (mx0 - ev.pageX) : (ev.pageX - mx0);
+        const l1 = Math.min(Math.max(l0 + deltaX, 0), lMax);
+
+        if ( modeButton ) {
+            if ( isRTL ) {
+                modeButton.style.right = `${l1}px`;
+                modeButton.style.left = 'auto';
+            } else {
+                modeButton.style.left = `${l1}px`;
+            }
         }
-        const modeSlider = qs$('.filteringModeSlider');
-        if ( `${level}` === modeSlider.dataset.level ) { return; }
+
+        const level = Math.min(BLOCKING_MODE_MAX, Math.max(0, Math.round(l1 / step)));
+        if ( level === pendingLevel ) { return; }
+        pendingLevel = level;
+
         dom.text(
             '#filteringModeText .md-mode-preview',
             i18n$(`filteringMode${level}Name`)
         );
-        setFilteringMode(level);
-    };
+        renderModeDescription(level);
 
-    const moveAsync = ev => {
-        if ( timer !== undefined ) { return; }
-        mx1 = ev.pageX;
-        timer = self.requestAnimationFrame(move);
+        const sliderLabels = qs$('.md-slider-labels');
+        if ( sliderLabels ) {
+            sliderLabels.dataset.level = level;
+        }
     };
 
     const stop = ev => {
         if ( ev.button !== 0 ) { return; }
-        const modeSlider = qs$('.filteringModeSlider');
-        if ( dom.cl.has(modeSlider, 'moving') === false ) { return; }
+        if ( !modeSlider || dom.cl.has(modeSlider, 'moving') === false ) { return; }
         dom.cl.remove(modeSlider, 'moving');
-        self.removeEventListener('mousemove', moveAsync, { capture: true });
+        self.removeEventListener('mousemove', move, { capture: true });
         self.removeEventListener('mouseup', stop, { capture: true });
+
+        if ( modeButton ) {
+            modeButton.style.left = '';
+            modeButton.style.right = '';
+        }
+
         dom.text('#filteringModeText .md-mode-preview', '');
-        commitFilteringMode();
+
+        const finalLevel = pendingLevel >= 0 ? pendingLevel : parseInt(modeSlider.dataset.level, 10);
+        setFilteringMode(finalLevel, true);
+
         ev.stopPropagation();
         ev.preventDefault();
-        if ( timer !== undefined ) {
-            self.cancelAnimationFrame(timer);
-            timer = undefined;
-        }
     };
 
     const startSliding = ev => {
         if ( ev.button !== 0 ) { return; }
-        const modeButton = qs$('.filteringModeButton');
+        modeButton = qs$('.filteringModeButton');
         if ( ev.currentTarget !== modeButton ) { return; }
-        const modeSlider = qs$('.filteringModeSlider');
+        modeSlider = qs$('.filteringModeSlider');
         if ( dom.cl.has(modeSlider, 'moving') ) { return; }
+
+        isRTL = qs$('body[dir="rtl"]') !== null;
         modeSlider.dataset.levelBefore = modeSlider.dataset.level;
-        mx0 = ev.pageX;
-        const buttonRect = modeButton.getBoundingClientRect();
-        l0 = buttonRect.left + buttonRect.width / 2;
+        const currentLevel = parseInt(modeSlider.dataset.level, 10) || 0;
+        pendingLevel = currentLevel;
+
         const sliderRect = modeSlider.getBoundingClientRect();
+        const buttonRect = modeButton.getBoundingClientRect();
         lMax = sliderRect.width - buttonRect.width;
+        step = lMax / BLOCKING_MODE_MAX;
+        l0 = currentLevel * step;
+        mx0 = ev.pageX;
+
         dom.cl.add(modeSlider, 'moving');
-        self.addEventListener('mousemove', moveAsync, { capture: true });
+        self.addEventListener('mousemove', move, { capture: true });
         self.addEventListener('mouseup', stop, { capture: true });
         ev.stopPropagation();
         ev.preventDefault();

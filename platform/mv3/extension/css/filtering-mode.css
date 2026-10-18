@@ -13,9 +13,9 @@
 */
 
 :root {
-    --fm-knob-size: 26px;
-    --fm-step: 48px;                             /* spacing between positions */
-    --fm-track-height: 32px;
+    --fm-knob-size: 28px;
+    --fm-step: 76px;                             /* generous spacing between positions */
+    --fm-track-height: 36px;
     --fm-track-width: calc(3 * var(--fm-step) + var(--fm-knob-size));
 }
 
@@ -121,7 +121,7 @@
 .filteringModeSlider[data-level="3"] .filteringModeButton { left: calc(3 * var(--fm-step)); }
 
 .filteringModeSlider:not(.moving) .filteringModeButton {
-    transition: left var(--md-dur-medium) var(--md-ease);
+    transition: left 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Right-to-left */
@@ -129,3 +129,7 @@
 [dir="rtl"] .filteringModeSlider[data-level="1"] .filteringModeButton { left: auto; right: calc(1 * var(--fm-step)); }
 [dir="rtl"] .filteringModeSlider[data-level="2"] .filteringModeButton { left: auto; right: calc(2 * var(--fm-step)); }
 [dir="rtl"] .filteringModeSlider[data-level="3"] .filteringModeButton { left: auto; right: calc(3 * var(--fm-step)); }
+
+[dir="rtl"] .filteringModeSlider:not(.moving) .filteringModeButton {
+    transition: right 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
